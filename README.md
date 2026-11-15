@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# YourLife
 
-## Getting Started
+> One life. One system. One truth.
 
-First, run the development server:
+A personal operating system to manage, understand and improve every dimension of life.
+Responsive web app (PWA) built with Next.js 16, TypeScript, Tailwind CSS, shadcn/ui and Supabase.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## Status: Phase 0 (Setup)
+
+- Magic-link sign-in (Supabase Auth), every page except `/login` requires a session
+- App shell: desktop sidebar with the 7 life areas, phone bottom nav (Home · Tasks · Log · Journal · More)
+- English / Vietnamese UI (`messages/en.json`, `messages/vi.json`), switch in Settings
+- Command Center reads `v_life_area_summary`; each area page reads `v_goal_progress`
+- Full database: 40 tables, 14 views, RLS on every table, seed on sign-up (`supabase/migrations`)
+- Installable PWA manifest
+
+## Project structure
+
+```
+src/
+  app/(auth)/login        magic-link sign-in
+  app/auth/callback       exchanges the link code for a session
+  app/(app)/...           signed-in pages: /, /[area], /[area]/[page], /goals, /tasks, /log, ...
+  core/                   shared layer: navigation, module manifest type, row types
+  modules/<area>/         one folder per life area (manifest.ts today; components, queries, actions later)
+  lib/supabase/           browser, server and proxy clients
+  i18n/                   next-intl config (locale from cookie, no locale in URL)
+  proxy.ts                refreshes the session and protects routes (Next 16 "proxy" = old middleware)
+supabase/migrations/      SQL, applied in file-name order
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Rules: modules import from `core`, never from each other. Dashboards and reports only query views;
+no aggregated numbers are stored.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. **Environment**: copy `.env.example` to `.env.local` and fill in the Supabase Project URL and anon
+   (publishable) key from *Supabase → Project Settings → API*. Never put the `service_role` key in this app.
+2. **Database**: apply the migrations to your Supabase project, either
+   - with the CLI: `npx supabase login`, `npx supabase link --project-ref <ref>`, `npx supabase db push`, or
+   - by pasting each file of `supabase/migrations/` in order into *SQL Editor → Run*.
+3. **Auth**: in *Authentication → URL Configuration* set **Site URL** to your app URL and add
+   `http://localhost:3000/auth/callback` (and later your Vercel URL + `/auth/callback`) to **Redirect URLs**.
+4. **Run**: `npm install`, `npm run dev`, open http://localhost:3000 and sign in with your email.
+   The sign-up trigger creates your profile, 7 life areas, 11 default metrics and 12 finance categories.
 
-## Learn More
+## Testing the database without Supabase
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+createdb yourlife_test
+psql -d yourlife_test -f supabase/local_auth_mock.sql $(ls supabase/migrations/*.sql | grep -v storage | sed 's/^/-f /')
+psql -d yourlife_test -f supabase/smoke_test.sql
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Docs
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Product requirements and the database design live in the project docs (PRD v1.0, Database Schema v1.1).
