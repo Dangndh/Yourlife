@@ -20,7 +20,7 @@ export async function Sidebar({ email }: { email?: string }) {
       <nav className="flex flex-1 flex-col gap-6 overflow-y-auto px-3 pb-4">
         <div className="flex flex-col gap-0.5">
           {coreNav.map((item) => (
-            <NavLink key={item.href} href={item.href} label={t(`nav.${item.labelKey}`)} icon={item.icon} />
+            <NavLink key={item.href} href={item.href} label={t(`nav.${item.labelKey}`)} icon={<item.icon className="size-4" />} />
           ))}
         </div>
 
@@ -29,13 +29,13 @@ export async function Sidebar({ email }: { email?: string }) {
             {t("nav.areas")}
           </div>
           {modules.map((m) => (
-            <NavLink key={m.key} href={`/${m.key}`} label={t(`areas.${m.key}`)} icon={m.icon} />
+            <NavLink key={m.key} href={`/${m.key}`} label={t(`areas.${m.key}`)} icon={<m.icon className="size-4" />} />
           ))}
         </div>
 
         <div className="flex flex-col gap-0.5">
           {reflectNav.map((item) => (
-            <NavLink key={item.href} href={item.href} label={t(`nav.${item.labelKey}`)} icon={item.icon} />
+            <NavLink key={item.href} href={item.href} label={t(`nav.${item.labelKey}`)} icon={<item.icon className="size-4" />} />
           ))}
         </div>
       </nav>

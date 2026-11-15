@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import type { LucideIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -10,7 +9,11 @@ export function isActive(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);
 }
 
-export function NavLink({ href, label, icon: Icon }: { href: string; label: string; icon: LucideIcon }) {
+/**
+ * `icon` is an already-rendered element (e.g. <Wallet className="size-4" />), not the icon component:
+ * this is a Client Component, and a component function cannot be passed from a Server Component.
+ */
+export function NavLink({ href, label, icon }: { href: string; label: string; icon: React.ReactNode }) {
   const pathname = usePathname();
   const active = isActive(pathname, href);
 
@@ -25,7 +28,7 @@ export function NavLink({ href, label, icon: Icon }: { href: string; label: stri
           : "text-muted-foreground hover:bg-sidebar-accent hover:text-sidebar-foreground",
       )}
     >
-      <Icon className="size-4" />
+      {icon}
       <span className="truncate">{label}</span>
     </Link>
   );

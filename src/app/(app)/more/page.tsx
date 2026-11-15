@@ -15,12 +15,12 @@ export default async function MorePage() {
         <section className="flex flex-col gap-0.5">
           <h2 className="text-muted-foreground px-3 pb-1 text-xs font-medium uppercase">{t("nav.areas")}</h2>
           {modules.map((m) => (
-            <NavLink key={m.key} href={`/${m.key}`} label={t(`areas.${m.key}`)} icon={m.icon} />
+            <NavLink key={m.key} href={`/${m.key}`} label={t(`areas.${m.key}`)} icon={<m.icon className="size-4" />} />
           ))}
         </section>
         <section className="flex flex-col gap-0.5">
           {[...coreNav.slice(1), ...reflectNav].map((item) => (
-            <NavLink key={item.href} href={item.href} label={t(`nav.${item.labelKey}`)} icon={item.icon} />
+            <NavLink key={item.href} href={item.href} label={t(`nav.${item.labelKey}`)} icon={<item.icon className="size-4" />} />
           ))}
         </section>
         <form action="/auth/signout" method="post">
