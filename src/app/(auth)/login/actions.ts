@@ -1,5 +1,6 @@
 "use server";
 
+import { headers } from "next/headers";
 import { z } from "zod";
 
 import { createClient } from "@/lib/supabase/server";
@@ -19,7 +20,11 @@ export async function sendMagicLink(_prev: LoginState, formData: FormData): Prom
   if (!parsed.success) return { status: "error" };
 
   const supabase = await createClient();
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  // Use the address the user is actually on (localhost, Vercel preview or production),
+  // so the magic link always returns to the same site. That URL must be allowed in
+  // Supabase → Authentication → URL Configuration → Redirect URLs.
+  const origin = (await headers()).get("origin");
+  const siteUrl = origin ?? process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   const { error } = await supabase.auth.signInWithOtp({
     email: parsed.data.email,
     options: {

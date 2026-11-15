@@ -39,9 +39,13 @@ no aggregated numbers are stored.
 2. **Database**: apply the migrations to your Supabase project, either
    - with the CLI: `npx supabase login`, `npx supabase link --project-ref <ref>`, `npx supabase db push`, or
    - by pasting each file of `supabase/migrations/` in order into *SQL Editor → Run*.
-3. **Auth**: in *Authentication → URL Configuration* set **Site URL** to your app URL and add
-   `http://localhost:3000/auth/callback` (and later your Vercel URL + `/auth/callback`) to **Redirect URLs**.
+3. **Auth**: in *Authentication → URL Configuration* set **Site URL** to your production URL and add these
+   **Redirect URLs** (the magic link returns to whichever site you signed in from):
+   - `http://localhost:3000/**`
+   - `https://<your-app>.vercel.app/**` (production)
+   - `https://*-<your-vercel-team>.vercel.app/**` (preview deployments)
 4. **Run**: `npm install`, `npm run dev`, open http://localhost:3000 and sign in with your email.
+   Or deploy on Vercel: import the repo, add the two `NEXT_PUBLIC_SUPABASE_*` variables, deploy.
    The sign-up trigger creates your profile, 7 life areas, 11 default metrics and 12 finance categories.
 
 ## Testing the database without Supabase
