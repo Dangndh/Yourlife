@@ -5,7 +5,7 @@
 A personal operating system to manage, understand and improve every dimension of life.
 Responsive web app (PWA) built with Next.js 16, TypeScript, Tailwind CSS, shadcn/ui and Supabase.
 
-## Status: Phase 0 (Setup)
+## Status: Phase 0 (Setup), deployed on Vercel from `main`
 
 - Magic-link sign-in (Supabase Auth), every page except `/login` requires a session
 - App shell: desktop sidebar with the 7 life areas, phone bottom nav (Home · Tasks · Log · Journal · More)
