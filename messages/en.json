@@ -1,0 +1,83 @@
+{
+  "app": { "name": "YourLife", "tagline": "One life. One system. One truth." },
+  "nav": {
+    "home": "Home",
+    "goals": "Goals",
+    "tasks": "Tasks",
+    "log": "Log",
+    "journal": "Journal",
+    "calendar": "Calendar",
+    "reports": "Reports",
+    "settings": "Settings",
+    "more": "More",
+    "areas": "Life areas",
+    "signOut": "Sign out"
+  },
+  "areas": {
+    "finance": "Finance",
+    "career": "Career",
+    "learning": "Learning",
+    "health": "Health",
+    "relationships": "Relationships",
+    "family": "Family",
+    "growth": "Personal Growth"
+  },
+  "pages": {
+    "overview": "Overview",
+    "transactions": "Transactions",
+    "accounts": "Accounts",
+    "budgets": "Budgets",
+    "goals": "Goals",
+    "exchange-rates": "Exchange rates",
+    "jobs": "Jobs",
+    "projects": "Work projects",
+    "achievements": "Achievements",
+    "skills": "Skills",
+    "courses": "Courses",
+    "sessions": "Study logs",
+    "workouts": "Workouts",
+    "records": "Health records",
+    "habits": "Habits",
+    "contacts": "Contacts",
+    "interactions": "Interactions",
+    "members": "Members",
+    "events": "Family events",
+    "responsibilities": "Responsibilities",
+    "experiences": "Experiences",
+    "reflections": "Reflections"
+  },
+  "login": {
+    "title": "Sign in to YourLife",
+    "description": "We will email you a sign-in link. No password needed.",
+    "email": "Email",
+    "submit": "Send magic link",
+    "sent": "Check your inbox: we sent a sign-in link to {email}.",
+    "error": "Could not send the link. Please try again."
+  },
+  "home": {
+    "title": "Command Center",
+    "subtitle": "Your whole life at a glance",
+    "activeGoals": "{count, plural, =0 {No active goals} one {# active goal} other {# active goals}}",
+    "progress": "Avg. progress {value}%",
+    "logs7d": "{count, plural, =0 {No activity this week} one {# log this week} other {# logs this week}}",
+    "score": "Score {value}/10",
+    "noScore": "Not scored yet",
+    "empty": "Your life areas will appear here after your first sign-in."
+  },
+  "module": {
+    "subpages": "Sections",
+    "goals": "Active goals",
+    "noGoals": "No goals yet in this area."
+  },
+  "comingSoon": {
+    "title": "Coming soon",
+    "description": "This page is part of the YourLife MVP and will be built in the next phase."
+  },
+  "settings": {
+    "language": "Language",
+    "languageHint": "Interface language. Your own data can be written in any language.",
+    "save": "Save",
+    "baseCurrency": "Base currency",
+    "baseCurrencyHint": "All totals are converted to this currency. USD and EUR use the exchange rates you enter."
+  }
+}

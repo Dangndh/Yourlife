@@ -1,0 +1,83 @@
+{
+  "app": { "name": "YourLife", "tagline": "Một cuộc đời. Một hệ thống. Một sự thật." },
+  "nav": {
+    "home": "Trang chủ",
+    "goals": "Mục tiêu",
+    "tasks": "Công việc",
+    "log": "Nhật ký hoạt động",
+    "journal": "Nhật ký",
+    "calendar": "Lịch",
+    "reports": "Báo cáo",
+    "settings": "Cài đặt",
+    "more": "Thêm",
+    "areas": "Lĩnh vực",
+    "signOut": "Đăng xuất"
+  },
+  "areas": {
+    "finance": "Tài chính",
+    "career": "Sự nghiệp",
+    "learning": "Học tập",
+    "health": "Sức khỏe",
+    "relationships": "Các mối quan hệ",
+    "family": "Gia đình",
+    "growth": "Phát triển bản thân"
+  },
+  "pages": {
+    "overview": "Tổng quan",
+    "transactions": "Giao dịch",
+    "accounts": "Tài khoản",
+    "budgets": "Ngân sách",
+    "goals": "Mục tiêu",
+    "exchange-rates": "Tỷ giá",
+    "jobs": "Công việc",
+    "projects": "Dự án",
+    "achievements": "Thành tích",
+    "skills": "Kỹ năng",
+    "courses": "Khóa học",
+    "sessions": "Buổi học",
+    "workouts": "Tập luyện",
+    "records": "Hồ sơ sức khỏe",
+    "habits": "Thói quen",
+    "contacts": "Danh bạ",
+    "interactions": "Tương tác",
+    "members": "Thành viên",
+    "events": "Sự kiện gia đình",
+    "responsibilities": "Trách nhiệm",
+    "experiences": "Trải nghiệm",
+    "reflections": "Suy ngẫm"
+  },
+  "login": {
+    "title": "Đăng nhập YourLife",
+    "description": "Chúng tôi sẽ gửi link đăng nhập qua email. Không cần mật khẩu.",
+    "email": "Email",
+    "submit": "Gửi link đăng nhập",
+    "sent": "Hãy kiểm tra hộp thư: link đăng nhập đã được gửi tới {email}.",
+    "error": "Không gửi được link. Vui lòng thử lại."
+  },
+  "home": {
+    "title": "Trung tâm điều khiển",
+    "subtitle": "Toàn cảnh cuộc sống của bạn",
+    "activeGoals": "{count, plural, =0 {Chưa có mục tiêu} other {# mục tiêu đang chạy}}",
+    "progress": "Tiến độ TB {value}%",
+    "logs7d": "{count, plural, =0 {Chưa có hoạt động tuần này} other {# hoạt động tuần này}}",
+    "score": "Điểm {value}/10",
+    "noScore": "Chưa chấm điểm",
+    "empty": "Các lĩnh vực sẽ xuất hiện sau lần đăng nhập đầu tiên."
+  },
+  "module": {
+    "subpages": "Mục",
+    "goals": "Mục tiêu đang chạy",
+    "noGoals": "Chưa có mục tiêu nào trong lĩnh vực này."
+  },
+  "comingSoon": {
+    "title": "Sắp ra mắt",
+    "description": "Trang này thuộc MVP của YourLife và sẽ được xây ở phase tiếp theo."
+  },
+  "settings": {
+    "language": "Ngôn ngữ",
+    "languageHint": "Ngôn ngữ giao diện. Dữ liệu của bạn có thể viết bằng bất kỳ ngôn ngữ nào.",
+    "save": "Lưu",
+    "baseCurrency": "Tiền tệ gốc",
+    "baseCurrencyHint": "Mọi tổng được quy về tiền tệ này. USD và EUR dùng tỷ giá bạn nhập."
+  }
+}
