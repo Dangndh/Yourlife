@@ -1,12 +1,22 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from "./env";
+import { missingSupabaseEnv, SUPABASE_ANON_KEY, SUPABASE_URL } from "./env";
 
 const PUBLIC_PATHS = ["/login", "/auth"];
 
 /** Refreshes the Supabase session cookie and sends signed-out visitors to /login. */
 export async function updateSession(request: NextRequest) {
+  const missing = missingSupabaseEnv();
+  if (missing.length > 0) {
+    console.error(`[yourlife] Missing environment variables: ${missing.join(", ")}`);
+    return new NextResponse(
+      `YourLife is not configured yet. Missing environment variables: ${missing.join(", ")}.\n` +
+        "Add them in Vercel → Project → Settings → Environment Variables, then redeploy.",
+      { status: 503, headers: { "content-type": "text/plain; charset=utf-8" } },
+    );
+  }
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
@@ -23,9 +33,15 @@ export async function updateSession(request: NextRequest) {
   });
 
   // Do not run code between createServerClient and getUser(): it can log users out at random.
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    ({
+      data: { user },
+    } = await supabase.auth.getUser());
+  } catch (error) {
+    // Supabase unreachable or misconfigured: treat as signed out instead of crashing every page.
+    console.error("[yourlife] supabase.auth.getUser failed", error);
+  }
 
   const path = request.nextUrl.pathname;
   const isPublic = PUBLIC_PATHS.some((p) => path === p || path.startsWith(`${p}/`));
