@@ -29,6 +29,7 @@
     "growth": "Phát triển bản thân"
   },
   "pages": {
+    "vocab": "Từ vựng",
     "overview": "Tổng quan",
     "transactions": "Giao dịch",
     "accounts": "Tài khoản",
@@ -39,7 +40,7 @@
     "projects": "Dự án",
     "achievements": "Thành tích",
     "skills": "Kỹ năng",
-    "courses": "Khóa học",
+    "courses": "Khoá học",
     "sessions": "Buổi học",
     "workouts": "Tập luyện",
     "records": "Hồ sơ sức khỏe",
@@ -239,7 +240,9 @@
       "saveFailed": "Không lưu được. Vui lòng thử lại.",
       "inFuture": "Không được ở tương lai.",
       "targetRequired": "Cần giá trị đích khi đã chọn chỉ số.",
-      "duplicate": "Đã có kỹ năng trùng tên."
+      "duplicate": "Đã có kỹ năng trùng tên.",
+      "duplicateTerm": "Từ này đã có trong bộ. Bấm \"Vẫn thêm\" nếu muốn thêm lần nữa.",
+      "emptyList": "Không thấy dòng nào có đủ từ và nghĩa."
     },
     "metricProgress": "Hiện tại {current} · đích {target} · từ {baseline}",
     "progressFromMetric": "Tiến độ được đo bằng chỉ số."
@@ -560,6 +563,123 @@
       "evidence": "Dựa trên",
       "evidencePlaceholder": "VD: thi thử IELTS 6.5",
       "titlePlaceholder": "VD: Khoá IELTS Writing"
+    }
+  },
+  "vocab": {
+    "subtitle": "Học từ bằng ôn tập ngắt quãng: mỗi từ quay lại đúng lúc bạn sắp quên",
+    "today": "Từ vựng hôm nay",
+    "reviewsToday": "thẻ đã ôn hôm nay",
+    "streakDays": "ngày liên tiếp",
+    "last30": "Số thẻ ôn trong 30 ngày qua",
+    "reviewAll": "Ôn {count} thẻ",
+    "allDone": "Hôm nay đã xong",
+    "noDecks": "Chưa có bộ từ nào. Tạo bộ đầu tiên →",
+    "intro": "Tạo một bộ từ cho ngôn ngữ bạn đang học, thêm từ (hoặc dán cả danh sách), rồi ôn vài phút mỗi ngày.",
+    "newDeck": "Bộ từ mới",
+    "createDeck": "Tạo bộ từ",
+    "editDeck": "Sửa bộ từ",
+    "deleteDeck": "Xoá bộ từ",
+    "allDecks": "Tất cả bộ từ",
+    "cardCount": "{count} từ",
+    "study": "Học",
+    "studyCount": "Học {count} thẻ",
+    "todayCounts": "Hôm nay: {due} cần ôn · {fresh} từ mới",
+    "dailyGoal": "Mục tiêu mỗi ngày (thẻ)",
+    "howTitle": "Cách hoạt động",
+    "how1": "Từ mới hiện dưới dạng thẻ lật. Sau đó bạn luyện bằng cách chọn nghĩa đúng, gõ lại từ và nghe rồi viết.",
+    "how2": "Hãy trả lời thật lòng. Từ khó sẽ quay lại sớm, từ đã thuộc sẽ quay lại sau vài ngày hoặc vài tháng.",
+    "addCard": "Thêm từ",
+    "addAnyway": "Vẫn thêm",
+    "cardAdded": "Đã thêm",
+    "moreFields": "Phiên âm, câu ví dụ, ghi chú",
+    "editCard": "Sửa từ",
+    "deleteCard": "Xoá từ",
+    "resetCard": "Học lại từ này từ đầu",
+    "repsLapses": "Đã ôn {reps} lần · quên {lapses} lần",
+    "words": "Danh sách từ",
+    "noCards": "Chưa có từ nào. Thêm ở trên hoặc dán cả danh sách.",
+    "progress": "Tiến độ",
+    "importTitle": "Dán danh sách",
+    "importLabel": "Mỗi dòng một từ",
+    "importHint": "từ | nghĩa | phiên âm | câu ví dụ | nghĩa câu ví dụ. Chỉ cần 2 cột đầu. Dùng Tab, |, = hoặc - để ngăn cách đều được.",
+    "import": "Nhập danh sách",
+    "imported": "Đã thêm {imported} từ, bỏ qua {skipped} (đã có trong bộ hoặc thiếu nghĩa).",
+    "listen": "Nghe",
+    "listenAgain": "Nghe lại",
+    "sound": "Bật/tắt âm thanh",
+    "stop": "Dừng",
+    "newWord": "Từ mới",
+    "showAnswer": "Xem nghĩa",
+    "continue": "Tiếp tục",
+    "check": "Kiểm tra",
+    "dontKnow": "Tôi không biết",
+    "iWasRight": "Tôi trả lời đúng",
+    "typeTheWord": "Gõ từ",
+    "typeWhatYouHear": "Gõ từ bạn nghe được",
+    "doneTitle": "Xong buổi ôn!",
+    "nothingDue": "Hiện chưa có thẻ nào cần ôn",
+    "doneSummary": "{count} thẻ · đúng {pct}% · {minutes} phút",
+    "saveErrors": "{count} câu trả lời chưa lưu được. Kiểm tra kết nối mạng.",
+    "backToDecks": "Quay lại",
+    "modeLabel": "Kiểu luyện",
+    "dueNow": "cần ôn",
+    "dueToday": "ôn trong hôm nay",
+    "dueIn": "ôn sau {n} ngày",
+    "rating": {
+      "1": "Quên",
+      "2": "Khó",
+      "3": "Nhớ",
+      "4": "Dễ"
+    },
+    "in": {
+      "min": "{n} phút",
+      "day": "{n} ngày",
+      "month": "{n} tháng",
+      "year": "{n} năm"
+    },
+    "mode": {
+      "mix": "Trộn",
+      "flip": "Thẻ lật",
+      "choice": "Chọn nghĩa",
+      "type": "Gõ từ",
+      "listen": "Nghe và viết"
+    },
+    "modeHint": {
+      "flip": "Bạn có nhớ nghĩa không?",
+      "choice": "Chọn nghĩa đúng",
+      "type": "Viết từ có nghĩa là",
+      "listen": "Viết từ bạn nghe được"
+    },
+    "grade": {
+      "correct": "Chính xác!",
+      "almost": "Gần đúng: kiểm tra lại chính tả",
+      "wrong": "Chưa đúng. Đáp án ở phía trên."
+    },
+    "keys": {
+      "flip": "Space: xem nghĩa · 1–4: chấm",
+      "choice": "1–4: chọn · Enter: tiếp tục",
+      "type": "Enter: kiểm tra, rồi tiếp tục",
+      "listen": "Enter: kiểm tra, rồi tiếp tục"
+    },
+    "state": {
+      "new": "Mới",
+      "learning": "Đang học",
+      "young": "Đang ôn",
+      "known": "Đã thuộc"
+    },
+    "fields": {
+      "deckName": "Tên bộ từ",
+      "deckNamePlaceholder": "VD: Tiếng Anh: từ vựng IELTS",
+      "language": "Ngôn ngữ",
+      "languageHint": "Dùng để đọc to từ.",
+      "newPerDay": "Số từ mới mỗi ngày",
+      "newPerDayHint": "Nên bắt đầu với 10. Số thẻ ôn không bị giới hạn.",
+      "skillHint": "Thời gian học được tính cho kỹ năng này.",
+      "term": "Từ hoặc cụm từ",
+      "meaning": "Nghĩa",
+      "pronunciation": "Phiên âm",
+      "example": "Câu ví dụ",
+      "exampleMeaning": "Nghĩa câu ví dụ"
     }
   }
 }

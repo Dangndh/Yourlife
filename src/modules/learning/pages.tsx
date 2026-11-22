@@ -23,6 +23,7 @@ import { CourseForm } from "./components/course-form";
 import { SessionForm } from "./components/session-form";
 import { AssessmentForm, SkillForm } from "./components/skill-forms";
 import { WeekBars } from "./components/week-bars";
+import { vocabViews } from "./vocab/pages";
 import {
   COURSE_STATUSES,
   getCourse,
@@ -658,8 +659,17 @@ async function Overview() {
   );
 }
 
+async function Overviews() {
+  return (
+    <>
+      <vocabViews.Overview />
+      <Overview />
+    </>
+  );
+}
+
 export const learningViews = {
-  pages: { goals: GoalsPage, courses: CoursesPage, sessions: SessionsPage, skills: SkillsPage },
-  detail: { courses: CourseDetail, sessions: SessionDetail, skills: SkillDetail },
-  Overview,
+  pages: { vocab: vocabViews.page, goals: GoalsPage, courses: CoursesPage, sessions: SessionsPage, skills: SkillsPage },
+  detail: { vocab: vocabViews.detail, courses: CourseDetail, sessions: SessionDetail, skills: SkillDetail },
+  Overview: Overviews,
 };

@@ -6,6 +6,7 @@ export const manifest: ModuleManifest = {
   key: "learning",
   icon: BookOpen,
   pages: [
+    { slug: "vocab", labelKey: "vocab" },
     { slug: "goals", labelKey: "goals" },
     { slug: "courses", labelKey: "courses" },
     { slug: "sessions", labelKey: "sessions" },

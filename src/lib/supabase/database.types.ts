@@ -1469,6 +1469,91 @@ export type Database = {
         }
         Relationships: []
       }
+      lrn_cards: {
+        Row: {
+          created_at: string
+          deck_id: string
+          deleted_at: string | null
+          difficulty: number | null
+          due_at: string
+          example: string | null
+          example_meaning: string | null
+          id: string
+          lapses: number
+          last_review_at: string | null
+          meaning: string
+          notes: string | null
+          pronunciation: string | null
+          reps: number
+          stability: number | null
+          state: number
+          step: number
+          term: string
+          updated_at: string
+          user_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          created_at?: string
+          deck_id: string
+          deleted_at?: string | null
+          difficulty?: number | null
+          due_at?: string
+          example?: string | null
+          example_meaning?: string | null
+          id?: string
+          lapses?: number
+          last_review_at?: string | null
+          meaning: string
+          notes?: string | null
+          pronunciation?: string | null
+          reps?: number
+          stability?: number | null
+          state?: number
+          step?: number
+          term: string
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          deck_id?: string
+          deleted_at?: string | null
+          difficulty?: number | null
+          due_at?: string
+          example?: string | null
+          example_meaning?: string | null
+          id?: string
+          lapses?: number
+          last_review_at?: string | null
+          meaning?: string
+          notes?: string | null
+          pronunciation?: string | null
+          reps?: number
+          stability?: number | null
+          state?: number
+          step?: number
+          term?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lrn_cards_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "lrn_decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lrn_cards_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "v_deck_stats"
+            referencedColumns: ["deck_id"]
+          },
+        ]
+      }
       lrn_courses: {
         Row: {
           certificate_url: string | null
@@ -1573,10 +1658,153 @@ export type Database = {
           },
         ]
       }
+      lrn_decks: {
+        Row: {
+          created_at: string
+          deleted_at: string | null
+          description: string | null
+          id: string
+          language: string
+          name: string
+          new_per_day: number
+          skill_id: string | null
+          updated_at: string
+          user_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          created_at?: string
+          deleted_at?: string | null
+          description?: string | null
+          id?: string
+          language?: string
+          name: string
+          new_per_day?: number
+          skill_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          deleted_at?: string | null
+          description?: string | null
+          id?: string
+          language?: string
+          name?: string
+          new_per_day?: number
+          skill_id?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lrn_decks_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lrn_decks_skill_id_fkey"
+            columns: ["skill_id"]
+            isOneToOne: false
+            referencedRelation: "v_skill_levels"
+            referencedColumns: ["skill_id"]
+          },
+        ]
+      }
+      lrn_preferences: {
+        Row: {
+          created_at: string
+          daily_review_goal: number
+          updated_at: string
+          user_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          created_at?: string
+          daily_review_goal?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Update: {
+          created_at?: string
+          daily_review_goal?: number
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      lrn_reviews: {
+        Row: {
+          card_id: string
+          created_at: string
+          deck_id: string
+          duration_ms: number | null
+          id: string
+          interval_days: number | null
+          mode: string
+          rating: number
+          reviewed_at: string
+          state_before: number
+          user_id: string
+        }
+        ComputedFields: never
+        Insert: {
+          card_id: string
+          created_at?: string
+          deck_id: string
+          duration_ms?: number | null
+          id?: string
+          interval_days?: number | null
+          mode?: string
+          rating: number
+          reviewed_at?: string
+          state_before: number
+          user_id?: string
+        }
+        Update: {
+          card_id?: string
+          created_at?: string
+          deck_id?: string
+          duration_ms?: number | null
+          id?: string
+          interval_days?: number | null
+          mode?: string
+          rating?: number
+          reviewed_at?: string
+          state_before?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "lrn_reviews_card_id_fkey"
+            columns: ["card_id"]
+            isOneToOne: false
+            referencedRelation: "lrn_cards"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lrn_reviews_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "lrn_decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lrn_reviews_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "v_deck_stats"
+            referencedColumns: ["deck_id"]
+          },
+        ]
+      }
       lrn_study_sessions: {
         Row: {
           course_id: string | null
           created_at: string
+          deck_id: string | null
           deleted_at: string | null
           duration_min: number
           focus_rating: number | null
@@ -1592,6 +1820,7 @@ export type Database = {
         Insert: {
           course_id?: string | null
           created_at?: string
+          deck_id?: string | null
           deleted_at?: string | null
           duration_min: number
           focus_rating?: number | null
@@ -1606,6 +1835,7 @@ export type Database = {
         Update: {
           course_id?: string | null
           created_at?: string
+          deck_id?: string | null
           deleted_at?: string | null
           duration_min?: number
           focus_rating?: number | null
@@ -1624,6 +1854,20 @@ export type Database = {
             isOneToOne: false
             referencedRelation: "lrn_courses"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lrn_study_sessions_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "lrn_decks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "lrn_study_sessions_deck_id_fkey"
+            columns: ["deck_id"]
+            isOneToOne: false
+            referencedRelation: "v_deck_stats"
+            referencedColumns: ["deck_id"]
           },
           {
             foreignKeyName: "lrn_study_sessions_skill_id_fkey"
@@ -2520,6 +2764,20 @@ export type Database = {
         ComputedFields: never
         Relationships: []
       }
+      v_deck_stats: {
+        Row: {
+          deck_id: string | null
+          due_now: number | null
+          known: number | null
+          learning: number | null
+          new_cards: number | null
+          total: number | null
+          user_id: string | null
+          young: number | null
+        }
+        ComputedFields: never
+        Relationships: []
+      }
       v_derived_metric_values: {
         Row: {
           derived_key: string | null
@@ -2795,6 +3053,18 @@ export type Database = {
             referencedColumns: ["account_id"]
           },
         ]
+      }
+      v_vocab_daily: {
+        Row: {
+          day: string | null
+          duration_ms: number | null
+          forgotten: number | null
+          new_cards: number | null
+          reviews: number | null
+          user_id: string | null
+        }
+        ComputedFields: never
+        Relationships: []
       }
     }
     Functions: {

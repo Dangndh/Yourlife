@@ -95,6 +95,29 @@ select pg_temp.check(
 update lrn_study_sessions set deleted_at = now();
 select pg_temp.check((select count(*) from activity_logs where source_table = 'lrn_study_sessions') = 0, 'deleting a session removes its log');
 
+-- Vocabulary: reviews roll up into one study session per deck per day (and so into the Activity Log)
+insert into lrn_decks (name, language, skill_id) select 'English words', 'en-US', id from skills;
+insert into lrn_cards (deck_id, term, meaning) select id, 'apple', 'quả táo' from lrn_decks;
+insert into lrn_cards (deck_id, term, meaning) select id, 'river', 'dòng sông' from lrn_decks;
+select pg_temp.check((select total from v_deck_stats) = 2 and (select new_cards from v_deck_stats) = 2, 'deck stats count new cards');
+insert into lrn_reviews (card_id, deck_id, rating, state_before, duration_ms, reviewed_at)
+  select id, deck_id, 3, 0, 40000, '2026-11-20T02:00:00Z' from lrn_cards where term = 'apple';
+insert into lrn_reviews (card_id, deck_id, rating, state_before, duration_ms, reviewed_at)
+  select id, deck_id, 1, 0, 50000, '2026-11-20T02:05:00Z' from lrn_cards where term = 'river';
+select pg_temp.check((select count(*) from lrn_study_sessions where deck_id is not null and deleted_at is null) = 1, 'reviews on one day share one session');
+select pg_temp.check((select duration_min from lrn_study_sessions where deck_id is not null) = 2, 'session minutes = answer time, rounded up');
+select pg_temp.check((select title from activity_logs a join lrn_study_sessions s on s.id = a.source_id where s.deck_id is not null) = 'Study: English words · 2 cards', 'vocab session appears in the log');
+insert into lrn_reviews (card_id, deck_id, rating, state_before, duration_ms, reviewed_at)
+  select id, deck_id, 3, 1, 10000, '2026-11-21T02:00:00Z' from lrn_cards where term = 'river';
+select pg_temp.check((select count(*) from lrn_study_sessions where deck_id is not null) = 2, 'next day starts a new session');
+select pg_temp.check((select reviews from v_vocab_daily where day = '2026-11-20') = 2
+  and (select new_cards from v_vocab_daily where day = '2026-11-20') = 2
+  and (select forgotten from v_vocab_daily where day = '2026-11-20') = 1, 'daily review counts');
+insert into lrn_preferences default values;
+select pg_temp.check((select daily_review_goal from lrn_preferences) = 20, 'default daily goal');
+select id as deck_id from lrn_decks \gset
+select set_config('test.deck_id', :'deck_id', false);
+
 -- Row level security: another user sees none of it
 set request.jwt.claim.sub = '22222222-2222-2222-2222-222222222222';
 select pg_temp.check((select count(*) from goals) = 0, 'other user sees no goals');
@@ -103,3 +126,9 @@ select pg_temp.check((select count(*) from journal_entries) = 0, 'other user see
 select pg_temp.check((select count(*) from life_areas) = 7, 'other user sees only own areas');
 select pg_temp.check((select count(*) from reviews) = 0, 'other user sees no reviews');
 select pg_temp.check((select count(*) from lrn_courses) + (select count(*) from skills) = 0, 'other user sees no courses or skills');
+select pg_temp.check((select count(*) from lrn_decks) + (select count(*) from lrn_cards) + (select count(*) from lrn_reviews) = 0, 'other user sees no vocabulary');
+do $$ begin
+  insert into lrn_cards (deck_id, term, meaning) values (current_setting('test.deck_id')::uuid, 'x', 'y');
+  raise exception 'FAILED: other user added a card to someone else''s deck';
+exception when foreign_key_violation then raise notice 'ok: cards only go into your own deck';
+end $$;
