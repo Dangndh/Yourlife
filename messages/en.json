@@ -1,5 +1,8 @@
 {
-  "app": { "name": "YourLife", "tagline": "One life. One system. One truth." },
+  "app": {
+    "name": "YourLife",
+    "tagline": "One life. One system. One truth."
+  },
   "nav": {
     "home": "Home",
     "goals": "Goals",
@@ -79,5 +82,130 @@
     "save": "Save",
     "baseCurrency": "Base currency",
     "baseCurrencyHint": "All totals are converted to this currency. USD and EUR use the exchange rates you enter."
+  },
+  "planning": {
+    "goalsSubtitle": "What you want to achieve in each life area",
+    "newGoal": "New goal",
+    "editGoal": "Edit goal",
+    "newProject": "New project",
+    "editProject": "Edit project",
+    "editTask": "Edit task",
+    "addTask": "Add",
+    "addTaskPlaceholder": "Add a task…",
+    "save": "Save",
+    "cancel": "Cancel",
+    "edit": "Edit",
+    "back": "Back",
+    "delete": "Delete",
+    "deleteConfirm": "Delete for good?",
+    "deleteGoal": "Delete goal",
+    "deleteProject": "Delete project",
+    "deleteTask": "Delete task",
+    "markDone": "Mark as done",
+    "markUndone": "Mark as not done",
+    "projects": "Projects",
+    "tasks": "Tasks",
+    "openTasks": "Open tasks",
+    "relatedGoals": "Related goals",
+    "noGoals": "No goals here yet. Start with one thing you want to change this year.",
+    "noProjects": "No open projects.",
+    "noProjectsForGoal": "Break this goal into projects when it needs several steps.",
+    "noTasks": "No tasks yet.",
+    "progressTitle": "Progress",
+    "progressHint": "Progress is calculated automatically from the tasks of this goal and its projects.",
+    "tasksDone": "{done}/{total} tasks done",
+    "timeElapsed": "{value}% of the time used",
+    "behind": "Behind schedule",
+    "due": "Due {date}",
+    "target": "Target {date}",
+    "filters": {
+      "active": "Active",
+      "planned": "Planned & paused",
+      "done": "Finished",
+      "all": "All"
+    },
+    "fields": {
+      "title": "Title",
+      "area": "Life area",
+      "parentGoal": "Part of goal",
+      "parentGoalHint": "Optional: link a smaller goal to a bigger one.",
+      "description": "Notes",
+      "why": "Why it matters",
+      "whyHint": "You will see this again in your reviews.",
+      "goalType": "Type",
+      "status": "Status",
+      "priority": "Priority",
+      "startDate": "Start date",
+      "targetDate": "Target date",
+      "dueDate": "Due date",
+      "scheduledFor": "Do on",
+      "scheduledForHint": "The day you plan to work on it. It shows up in Today.",
+      "goal": "Goal",
+      "project": "Project",
+      "notes": "Notes",
+      "none": "None",
+      "projectGoalHint": "A project under a goal counts toward that goal's progress.",
+      "goalFromProject": "Taken from the project.",
+      "areaFromParent": "Follows the chosen goal or project."
+    },
+    "goalType": {
+      "outcome": "Outcome",
+      "milestone": "Milestone",
+      "habit": "Habit"
+    },
+    "goalStatus": {
+      "planned": "Planned",
+      "active": "Active",
+      "paused": "Paused",
+      "achieved": "Achieved",
+      "abandoned": "Abandoned"
+    },
+    "statusAction": {
+      "planned": "Plan",
+      "active": "Make active",
+      "paused": "Pause",
+      "achieved": "Mark achieved",
+      "abandoned": "Abandon"
+    },
+    "projectStatus": {
+      "planned": "Planned",
+      "active": "Active",
+      "on_hold": "On hold",
+      "completed": "Completed",
+      "cancelled": "Cancelled"
+    },
+    "taskStatus": {
+      "todo": "To do",
+      "doing": "In progress",
+      "done": "Done",
+      "cancelled": "Cancelled"
+    },
+    "priority": {
+      "p1": "Highest",
+      "p2": "High",
+      "p3": "Normal",
+      "p4": "Low"
+    },
+    "when": {
+      "none": "No date",
+      "today": "Today",
+      "tomorrow": "Tomorrow"
+    },
+    "today": {
+      "title": "Today",
+      "subtitle": "What to do now, across all life areas",
+      "overdue": "Overdue",
+      "today": "Today",
+      "upcoming": "Next 7 days",
+      "someday": "Someday",
+      "doneToday": "Done today",
+      "allClear": "Nothing planned for today.",
+      "later": "{count, plural, one {# more task} other {# more tasks}} scheduled later."
+    },
+    "errors": {
+      "invalid": "Please check this field.",
+      "targetBeforeStart": "Must be on or after the start date.",
+      "saveFailed": "Could not save. Please try again."
+    }
   }
 }

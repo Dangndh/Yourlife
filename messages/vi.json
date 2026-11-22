@@ -1,5 +1,8 @@
 {
-  "app": { "name": "YourLife", "tagline": "Một cuộc đời. Một hệ thống. Một sự thật." },
+  "app": {
+    "name": "YourLife",
+    "tagline": "Một cuộc đời. Một hệ thống. Một sự thật."
+  },
   "nav": {
     "home": "Trang chủ",
     "goals": "Mục tiêu",
@@ -79,5 +82,130 @@
     "save": "Lưu",
     "baseCurrency": "Tiền tệ gốc",
     "baseCurrencyHint": "Mọi tổng được quy về tiền tệ này. USD và EUR dùng tỷ giá bạn nhập."
+  },
+  "planning": {
+    "goalsSubtitle": "Những điều bạn muốn đạt được trong từng lĩnh vực",
+    "newGoal": "Mục tiêu mới",
+    "editGoal": "Sửa mục tiêu",
+    "newProject": "Dự án mới",
+    "editProject": "Sửa dự án",
+    "editTask": "Sửa việc",
+    "addTask": "Thêm",
+    "addTaskPlaceholder": "Thêm một việc…",
+    "save": "Lưu",
+    "cancel": "Hủy",
+    "edit": "Sửa",
+    "back": "Quay lại",
+    "delete": "Xóa",
+    "deleteConfirm": "Xóa hẳn?",
+    "deleteGoal": "Xóa mục tiêu",
+    "deleteProject": "Xóa dự án",
+    "deleteTask": "Xóa việc",
+    "markDone": "Đánh dấu xong",
+    "markUndone": "Đánh dấu chưa xong",
+    "projects": "Dự án",
+    "tasks": "Việc cần làm",
+    "openTasks": "Việc đang mở",
+    "relatedGoals": "Mục tiêu liên quan",
+    "noGoals": "Chưa có mục tiêu nào. Hãy bắt đầu với một điều bạn muốn thay đổi trong năm nay.",
+    "noProjects": "Không có dự án đang mở.",
+    "noProjectsForGoal": "Chia mục tiêu thành dự án khi nó cần nhiều bước.",
+    "noTasks": "Chưa có việc nào.",
+    "progressTitle": "Tiến độ",
+    "progressHint": "Tiến độ được tính tự động từ các việc của mục tiêu này và các dự án của nó.",
+    "tasksDone": "Xong {done}/{total} việc",
+    "timeElapsed": "Đã dùng {value}% thời gian",
+    "behind": "Chậm tiến độ",
+    "due": "Hạn {date}",
+    "target": "Đích {date}",
+    "filters": {
+      "active": "Đang làm",
+      "planned": "Dự định & tạm dừng",
+      "done": "Đã kết thúc",
+      "all": "Tất cả"
+    },
+    "fields": {
+      "title": "Tiêu đề",
+      "area": "Lĩnh vực",
+      "parentGoal": "Thuộc mục tiêu",
+      "parentGoalHint": "Không bắt buộc: gắn mục tiêu nhỏ vào mục tiêu lớn hơn.",
+      "description": "Ghi chú",
+      "why": "Vì sao quan trọng",
+      "whyHint": "Bạn sẽ thấy lại điều này khi review.",
+      "goalType": "Loại",
+      "status": "Trạng thái",
+      "priority": "Ưu tiên",
+      "startDate": "Ngày bắt đầu",
+      "targetDate": "Ngày đích",
+      "dueDate": "Hạn chót",
+      "scheduledFor": "Làm vào ngày",
+      "scheduledForHint": "Ngày bạn định làm. Việc sẽ hiện trong Hôm nay.",
+      "goal": "Mục tiêu",
+      "project": "Dự án",
+      "notes": "Ghi chú",
+      "none": "Không có",
+      "projectGoalHint": "Dự án thuộc mục tiêu sẽ được tính vào tiến độ của mục tiêu đó.",
+      "goalFromProject": "Lấy theo dự án.",
+      "areaFromParent": "Theo mục tiêu hoặc dự án đã chọn."
+    },
+    "goalType": {
+      "outcome": "Kết quả",
+      "milestone": "Cột mốc",
+      "habit": "Thói quen"
+    },
+    "goalStatus": {
+      "planned": "Dự định",
+      "active": "Đang làm",
+      "paused": "Tạm dừng",
+      "achieved": "Đã đạt",
+      "abandoned": "Đã bỏ"
+    },
+    "statusAction": {
+      "planned": "Dự định",
+      "active": "Bắt đầu làm",
+      "paused": "Tạm dừng",
+      "achieved": "Đánh dấu đã đạt",
+      "abandoned": "Bỏ mục tiêu"
+    },
+    "projectStatus": {
+      "planned": "Dự định",
+      "active": "Đang làm",
+      "on_hold": "Tạm hoãn",
+      "completed": "Hoàn thành",
+      "cancelled": "Đã hủy"
+    },
+    "taskStatus": {
+      "todo": "Cần làm",
+      "doing": "Đang làm",
+      "done": "Xong",
+      "cancelled": "Đã hủy"
+    },
+    "priority": {
+      "p1": "Rất cao",
+      "p2": "Cao",
+      "p3": "Bình thường",
+      "p4": "Thấp"
+    },
+    "when": {
+      "none": "Không đặt ngày",
+      "today": "Hôm nay",
+      "tomorrow": "Ngày mai"
+    },
+    "today": {
+      "title": "Hôm nay",
+      "subtitle": "Việc cần làm bây giờ, trên mọi lĩnh vực",
+      "overdue": "Quá hạn",
+      "today": "Hôm nay",
+      "upcoming": "7 ngày tới",
+      "someday": "Lúc nào đó",
+      "doneToday": "Đã xong hôm nay",
+      "allClear": "Hôm nay chưa có việc nào.",
+      "later": "Còn {count} việc khác ở các ngày sau."
+    },
+    "errors": {
+      "invalid": "Vui lòng kiểm tra lại ô này.",
+      "targetBeforeStart": "Phải bằng hoặc sau ngày bắt đầu.",
+      "saveFailed": "Không lưu được. Vui lòng thử lại."
+    }
   }
 }
