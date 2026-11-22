@@ -2,6 +2,8 @@ import { getTranslations } from "next-intl/server";
 
 import { PageHeader } from "@/components/page-header";
 import { GoalForm } from "@/components/planning/goal-form";
+import { metricOptions } from "@/core/metrics/format";
+import { getMetrics } from "@/core/metrics/queries";
 import { getAreas, getGoalOptions } from "@/core/planning/queries";
 
 export async function generateMetadata() {
@@ -12,7 +14,7 @@ export async function generateMetadata() {
 export default async function NewGoalPage({ searchParams }: { searchParams: Promise<{ area?: string }> }) {
   const { area } = await searchParams;
   const t = await getTranslations();
-  const [areas, goals] = await Promise.all([getAreas(), getGoalOptions()]);
+  const [areas, goals, metrics] = await Promise.all([getAreas(), getGoalOptions(), getMetrics()]);
   const defaultArea = areas.find((a) => a.key === area);
 
   return (
@@ -24,6 +26,7 @@ export default async function NewGoalPage({ searchParams }: { searchParams: Prom
       <GoalForm
         areas={areas}
         parentOptions={goals}
+        metricOptions={metricOptions(t, metrics)}
         defaultAreaId={defaultArea?.id}
         cancelHref={defaultArea ? `/${defaultArea.key}` : "/goals"}
       />

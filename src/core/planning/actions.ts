@@ -31,7 +31,7 @@ function fieldErrors(error: z.ZodError): FormState {
   const out: Record<string, string> = {};
   for (const issue of error.issues) {
     const key = String(issue.path[0] ?? "form");
-    out[key] ??= issue.message === "targetBeforeStart" ? "targetBeforeStart" : "invalid";
+    out[key] ??= ["targetBeforeStart", "targetRequired"].includes(issue.message) ? issue.message : "invalid";
   }
   return { fieldErrors: out };
 }

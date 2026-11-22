@@ -22,6 +22,14 @@ const optionalDate = z
   .optional()
   .transform((v) => (v ? v : null));
 
+const optionalNumber = z
+  .string()
+  .trim()
+  .nullable()
+  .optional()
+  .transform((v) => (v ? Number(v.replace(",", ".")) : null))
+  .refine((v) => v === null || Number.isFinite(v));
+
 const priority = (fallback: number) =>
   z.coerce.number().int().min(1).max(4).catch(fallback);
 
@@ -37,11 +45,16 @@ export const goalSchema = z
     priority: priority(2),
     start_date: optionalDate,
     target_date: optionalDate,
+    metric_id: optionalId,
+    baseline_value: optionalNumber,
+    target_value: optionalNumber,
   })
   .refine((g) => !g.start_date || !g.target_date || g.target_date >= g.start_date, {
     path: ["target_date"],
     message: "targetBeforeStart",
-  });
+  })
+  // A goal measured by a metric needs a target value (the database checks this too).
+  .refine((g) => !g.metric_id || g.target_value !== null, { path: ["target_value"], message: "targetRequired" });
 
 export const projectSchema = z
   .object({

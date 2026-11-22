@@ -6,7 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { todayIn } from "./dates";
 
 const GOAL_COLS =
-  "id, life_area_id, parent_goal_id, title, description, why, goal_type, status, priority, start_date, target_date, achieved_at";
+  "id, life_area_id, parent_goal_id, title, description, why, goal_type, status, priority, start_date, target_date, achieved_at, metric_id, baseline_value, target_value";
 const PROJECT_COLS = "id, life_area_id, goal_id, title, description, status, start_date, due_date, completed_at";
 const TASK_COLS =
   "id, life_area_id, project_id, goal_id, title, notes, status, priority, due_date, scheduled_for, completed_at";
