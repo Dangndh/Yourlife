@@ -79,6 +79,22 @@ delete from reviews;
 select pg_temp.check((select count(*) from review_area_scores) = 0, 'deleting a review deletes its scores');
 insert into reviews (period_type, period_start, period_end) values ('weekly', '2026-11-16', '2026-11-22');
 
+-- Learning: a study session writes a read-only log and feeds the weekly study-hours metric
+insert into skills (name, category, target_level, life_area_id) select 'English', 'language', 4, id from life_areas where key = 'learning';
+insert into skill_assessments (skill_id, level, assessed_on) select id, 2, '2026-10-01' from skills;
+insert into skill_assessments (skill_id, level, assessed_on) select id, 3, '2026-11-20' from skills;
+insert into lrn_courses (title, status, skill_id, est_hours) select 'IELTS Writing', 'in_progress', id, 20 from skills;
+insert into lrn_study_sessions (topic, duration_min, occurred_at, course_id, skill_id)
+  select 'Task 2 essay', 90, '2026-11-18T03:00:00Z', c.id, c.skill_id from lrn_courses c;
+select pg_temp.check((select title from activity_logs where source_table = 'lrn_study_sessions') = 'Study: Task 2 essay', 'study session creates a log');
+select pg_temp.check((select current_level from v_skill_levels where name = 'English') = 3, 'skill level = latest assessment');
+select pg_temp.check((select study_minutes from v_skill_levels where name = 'English') = 90, 'skill counts study minutes');
+select pg_temp.check(
+  (select s.value from v_metric_series s join metrics m on m.id = s.metric_id where m.derived_key = 'learning.weekly_study_hours') = 1.5,
+  'weekly study hours metric');
+update lrn_study_sessions set deleted_at = now();
+select pg_temp.check((select count(*) from activity_logs where source_table = 'lrn_study_sessions') = 0, 'deleting a session removes its log');
+
 -- Row level security: another user sees none of it
 set request.jwt.claim.sub = '22222222-2222-2222-2222-222222222222';
 select pg_temp.check((select count(*) from goals) = 0, 'other user sees no goals');
@@ -86,3 +102,4 @@ select pg_temp.check((select count(*) from metric_entries) = 0, 'other user sees
 select pg_temp.check((select count(*) from journal_entries) = 0, 'other user sees no journal');
 select pg_temp.check((select count(*) from life_areas) = 7, 'other user sees only own areas');
 select pg_temp.check((select count(*) from reviews) = 0, 'other user sees no reviews');
+select pg_temp.check((select count(*) from lrn_courses) + (select count(*) from skills) = 0, 'other user sees no courses or skills');

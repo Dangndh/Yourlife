@@ -66,3 +66,21 @@ export function dayOf(iso: string, timeZone: string): string {
 export function startOfDayIso(day: string, timeZone: string): string {
   return zonedLocalToIso(`${day}T00:00`, timeZone);
 }
+
+/** "YYYY-MM-DDTHH:mm" of an instant in a time zone, for <input type="datetime-local">. */
+export function localInputValue(iso: string, timeZone: string): string {
+  const p = Object.fromEntries(
+    new Intl.DateTimeFormat("en-CA", {
+      timeZone,
+      hourCycle: "h23",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+      .formatToParts(new Date(iso))
+      .map((x) => [x.type, x.value]),
+  );
+  return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`;
+}

@@ -16,6 +16,7 @@ import { getMetrics, getSeries } from "@/core/metrics/queries";
 import { addDays } from "@/core/planning/dates";
 import { getAreas, getGoalProgressList, getProjects, getTasks, getTimeZone, getToday } from "@/core/planning/queries";
 import { getModule } from "@/modules";
+import { moduleViews } from "@/modules/views";
 
 type Props = { params: Promise<{ area: string }> };
 
@@ -47,6 +48,7 @@ export default async function AreaPage({ params }: Props) {
   ]);
   const series = await getSeries(metrics, addDays(today, -400));
   const next = `/${area}`;
+  const Overview = moduleViews[area]?.Overview;
   const parentTitle = (task: (typeof tasks)[number]) =>
     (task.project_id && projects.find((p) => p.id === task.project_id)?.title) ||
     (task.goal_id && goals.find((g) => g.goal_id === task.goal_id)?.title) ||
@@ -67,6 +69,7 @@ export default async function AreaPage({ params }: Props) {
       />
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="flex flex-col gap-4 lg:col-span-2">
+          {Overview && <Overview />}
           <Card>
             <CardHeader>
               <CardTitle>{t("module.goals")}</CardTitle>
