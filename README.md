@@ -48,13 +48,15 @@ no aggregated numbers are stored.
    Or deploy on Vercel: import the repo, add the two `NEXT_PUBLIC_SUPABASE_*` variables, deploy.
    The sign-up trigger creates your profile, 7 life areas, 11 default metrics and 12 finance categories.
 
-## Testing the database without Supabase
+## Tests
 
-```bash
-createdb yourlife_test
-psql -d yourlife_test -f supabase/local_auth_mock.sql $(ls supabase/migrations/*.sql | grep -v storage | sed 's/^/-f /')
-psql -d yourlife_test -f supabase/smoke_test.sql
-```
+- `npm test`: unit tests (Vitest), files `src/**/*.test.ts`.
+- `DATABASE_URL=postgresql://… npm run db:test`: builds the schema from `supabase/migrations` in an **empty** Postgres
+  and runs `supabase/tests/app_test.sql` (seed, progress, read-only logs, RLS between users). Never point it at Supabase.
+- `npm run db:types`: same, and first regenerates `src/lib/supabase/database.types.ts` from that schema.
+  CI does this in a throwaway Postgres and fails if the committed types are out of date, so run it after adding a migration.
+
+`supabase/tests/smoke.sql` is a longer exploratory script (prints results, no assertions).
 
 ## Docs
 

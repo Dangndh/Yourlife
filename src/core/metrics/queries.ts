@@ -39,7 +39,7 @@ export async function getSeries(metrics: Metric[], since?: string) {
   for (const m of metrics) {
     // Manual entries are stored per day; group them into the metric's period (e.g. one point per week).
     const rows = (data ?? [])
-      .filter((r) => r.metric_id === m.id)
+      .filter((r): r is typeof r & { period_start: string } => r.metric_id === m.id && r.period_start !== null)
       .map((r) => ({
         period_start: m.source === "manual" ? periodStart(r.period_start, m.period) : r.period_start,
         value: Number(r.value),
