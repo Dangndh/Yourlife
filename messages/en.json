@@ -238,7 +238,8 @@
       "targetBeforeStart": "Must be on or after the start date.",
       "saveFailed": "Could not save. Please try again.",
       "inFuture": "Can't be in the future.",
-      "targetRequired": "A target value is needed when a metric is chosen."
+      "targetRequired": "A target value is needed when a metric is chosen.",
+      "duplicate": "A skill with this name already exists."
     },
     "metricProgress": "Now {current} · target {target} · from {baseline}",
     "progressFromMetric": "Progress is measured by the metric."
@@ -468,5 +469,97 @@
     "startButton": "Start",
     "continueButton": "Continue",
     "doneButton": "Done · view"
+  },
+  "learning": {
+    "coursesSubtitle": "Courses, books and certificates you are taking",
+    "sessionsSubtitle": "Every study session, and hours per week",
+    "skillsSubtitle": "What you are getting better at, and your level over time",
+    "newCourse": "New course",
+    "editCourse": "Edit course",
+    "deleteCourse": "Delete course",
+    "noCourses": "No courses yet. Add the first one.",
+    "noActiveCourses": "No course in progress. Add one →",
+    "open": "Open",
+    "logSession": "Log study",
+    "editSession": "Edit study session",
+    "deleteSession": "Delete session",
+    "sessionSaved": "Saved",
+    "moreSession": "Add time, focus or notes",
+    "noSessions": "No study sessions yet.",
+    "focusShort": "focus {value}/5",
+    "last90": "Last 90 days",
+    "hoursPerWeek": "Hours per week",
+    "lastWeek": "last week {value}",
+    "thisWeek": "Study this week",
+    "progress": "Progress",
+    "metricHint": "Also on the \"Study hours\" metric →",
+    "newSkill": "New skill",
+    "editSkill": "Edit skill",
+    "deleteSkill": "Delete skill",
+    "noSkills": "No skills yet. Add one, e.g. English or Excel.",
+    "notAssessed": "Not assessed yet",
+    "assessments": "Level history",
+    "noAssessments": "No assessments yet. Record your level now to see progress later.",
+    "addAssessment": "Record level",
+    "deleteAssessment": "Delete assessment",
+    "noSkillCourses": "No course linked to this skill.",
+    "levelLabel": "Level {current} of 5, target {target}",
+    "levelsHint": "Levels: 1 Beginner · 2 Elementary · 3 Intermediate · 4 Advanced · 5 Expert. Base it on something real (a test, a project, feedback).",
+    "levels": {
+      "l1": "Beginner",
+      "l2": "Elementary",
+      "l3": "Intermediate",
+      "l4": "Advanced",
+      "l5": "Expert"
+    },
+    "status": {
+      "in_progress": "In progress",
+      "planned": "Planned",
+      "completed": "Completed",
+      "dropped": "Dropped"
+    },
+    "statusAction": {
+      "in_progress": "Start",
+      "completed": "Mark completed",
+      "dropped": "Drop"
+    },
+    "format": {
+      "course": "Course",
+      "book": "Book",
+      "certificate": "Certificate",
+      "workshop": "Workshop",
+      "self_study": "Self-study",
+      "other": "Other"
+    },
+    "category": {
+      "language": "Language",
+      "technical": "Technical",
+      "soft": "Soft skill",
+      "professional": "Professional",
+      "other": "Other"
+    },
+    "fields": {
+      "topic": "What did you study?",
+      "topicPlaceholder": "e.g. IELTS Writing Task 2, chapter 3",
+      "course": "Course",
+      "skill": "Skill",
+      "skillHint": "Study for this course counts toward the skill.",
+      "focus": "Focus (1–5)",
+      "provider": "Provider",
+      "format": "Type",
+      "estHours": "Planned hours",
+      "estHoursHint": "Shows progress by hours studied.",
+      "startedOn": "Started",
+      "completedOn": "Finished",
+      "url": "Link",
+      "skillName": "Skill",
+      "skillPlaceholder": "e.g. English, Excel, Public speaking",
+      "category": "Category",
+      "targetLevel": "Target level",
+      "level": "Level",
+      "evidence": "Based on",
+      "evidencePlaceholder": "e.g. IELTS mock 6.5",
+      "titlePlaceholder": "e.g. IELTS Writing Masterclass"
+    }
   }
 }

@@ -8,6 +8,7 @@ import type { ActivityLog } from "@/core/activity/queries";
 function hrefFor(log: ActivityLog) {
   if (!log.source_table) return `/log/${log.id}`;
   if (log.source_table === "tasks" && log.task_id) return `/tasks/${log.task_id}?next=/log`;
+  if (log.source_table === "lrn_study_sessions" && log.source_id) return `/learning/sessions/${log.source_id}`;
   return null;
 }
 

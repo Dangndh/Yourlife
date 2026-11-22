@@ -238,7 +238,8 @@
       "targetBeforeStart": "Phải bằng hoặc sau ngày bắt đầu.",
       "saveFailed": "Không lưu được. Vui lòng thử lại.",
       "inFuture": "Không được ở tương lai.",
-      "targetRequired": "Cần giá trị đích khi đã chọn chỉ số."
+      "targetRequired": "Cần giá trị đích khi đã chọn chỉ số.",
+      "duplicate": "Đã có kỹ năng trùng tên."
     },
     "metricProgress": "Hiện tại {current} · đích {target} · từ {baseline}",
     "progressFromMetric": "Tiến độ được đo bằng chỉ số."
@@ -468,5 +469,97 @@
     "startButton": "Bắt đầu",
     "continueButton": "Làm tiếp",
     "doneButton": "Đã xong · xem"
+  },
+  "learning": {
+    "coursesSubtitle": "Khoá học, sách và chứng chỉ bạn đang theo",
+    "sessionsSubtitle": "Mọi buổi học, và số giờ mỗi tuần",
+    "skillsSubtitle": "Những gì bạn đang giỏi lên, và trình độ theo thời gian",
+    "newCourse": "Khoá học mới",
+    "editCourse": "Sửa khoá học",
+    "deleteCourse": "Xoá khoá học",
+    "noCourses": "Chưa có khoá học. Thêm khoá đầu tiên.",
+    "noActiveCourses": "Chưa có khoá đang học. Thêm một khoá →",
+    "open": "Mở",
+    "logSession": "Ghi buổi học",
+    "editSession": "Sửa buổi học",
+    "deleteSession": "Xoá buổi học",
+    "sessionSaved": "Đã lưu",
+    "moreSession": "Thêm giờ, mức tập trung hoặc ghi chú",
+    "noSessions": "Chưa có buổi học nào.",
+    "focusShort": "tập trung {value}/5",
+    "last90": "90 ngày qua",
+    "hoursPerWeek": "Số giờ mỗi tuần",
+    "lastWeek": "tuần trước {value}",
+    "thisWeek": "Học trong tuần này",
+    "progress": "Tiến độ",
+    "metricHint": "Cũng có trong chỉ số \"Giờ học\" →",
+    "newSkill": "Kỹ năng mới",
+    "editSkill": "Sửa kỹ năng",
+    "deleteSkill": "Xoá kỹ năng",
+    "noSkills": "Chưa có kỹ năng. Thêm một kỹ năng, VD Tiếng Anh hoặc Excel.",
+    "notAssessed": "Chưa đánh giá",
+    "assessments": "Lịch sử trình độ",
+    "noAssessments": "Chưa có đánh giá. Ghi trình độ hiện tại để sau này thấy tiến bộ.",
+    "addAssessment": "Ghi trình độ",
+    "deleteAssessment": "Xoá đánh giá",
+    "noSkillCourses": "Chưa có khoá học nào gắn với kỹ năng này.",
+    "levelLabel": "Trình độ {current}/5, mục tiêu {target}",
+    "levelsHint": "Các mức: 1 Mới bắt đầu · 2 Sơ cấp · 3 Trung cấp · 4 Nâng cao · 5 Chuyên gia. Hãy dựa vào điều có thật (bài kiểm tra, dự án, nhận xét).",
+    "levels": {
+      "l1": "Mới bắt đầu",
+      "l2": "Sơ cấp",
+      "l3": "Trung cấp",
+      "l4": "Nâng cao",
+      "l5": "Chuyên gia"
+    },
+    "status": {
+      "in_progress": "Đang học",
+      "planned": "Dự định",
+      "completed": "Đã xong",
+      "dropped": "Đã bỏ"
+    },
+    "statusAction": {
+      "in_progress": "Bắt đầu học",
+      "completed": "Đánh dấu đã xong",
+      "dropped": "Bỏ"
+    },
+    "format": {
+      "course": "Khoá học",
+      "book": "Sách",
+      "certificate": "Chứng chỉ",
+      "workshop": "Hội thảo",
+      "self_study": "Tự học",
+      "other": "Khác"
+    },
+    "category": {
+      "language": "Ngôn ngữ",
+      "technical": "Kỹ thuật",
+      "soft": "Kỹ năng mềm",
+      "professional": "Chuyên môn",
+      "other": "Khác"
+    },
+    "fields": {
+      "topic": "Bạn đã học gì?",
+      "topicPlaceholder": "VD: IELTS Writing Task 2, chương 3",
+      "course": "Khoá học",
+      "skill": "Kỹ năng",
+      "skillHint": "Giờ học khoá này được tính cho kỹ năng.",
+      "focus": "Mức tập trung (1–5)",
+      "provider": "Nơi cung cấp",
+      "format": "Loại",
+      "estHours": "Số giờ dự kiến",
+      "estHoursHint": "Dùng để hiện tiến độ theo giờ đã học.",
+      "startedOn": "Bắt đầu",
+      "completedOn": "Hoàn thành",
+      "url": "Liên kết",
+      "skillName": "Kỹ năng",
+      "skillPlaceholder": "VD: Tiếng Anh, Excel, Thuyết trình",
+      "category": "Nhóm",
+      "targetLevel": "Trình độ mục tiêu",
+      "level": "Trình độ",
+      "evidence": "Dựa trên",
+      "evidencePlaceholder": "VD: thi thử IELTS 6.5",
+      "titlePlaceholder": "VD: Khoá IELTS Writing"
+    }
   }
 }

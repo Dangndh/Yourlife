@@ -7,29 +7,12 @@ import { PageHeader } from "@/components/page-header";
 import { DeleteButton } from "@/components/planning/delete-button";
 import { deleteLog } from "@/core/activity/actions";
 import { getLog } from "@/core/activity/queries";
+import { localInputValue } from "@/core/planning/dates";
 import { getAreas, getTimeZone } from "@/core/planning/queries";
 
 export async function generateMetadata() {
   const t = await getTranslations("log");
   return { title: t("edit") };
-}
-
-/** "YYYY-MM-DDTHH:mm" of an instant in a time zone, for <input type="datetime-local">. */
-function localInput(iso: string, timeZone: string) {
-  const p = Object.fromEntries(
-    new Intl.DateTimeFormat("en-CA", {
-      timeZone,
-      hourCycle: "h23",
-      year: "numeric",
-      month: "2-digit",
-      day: "2-digit",
-      hour: "2-digit",
-      minute: "2-digit",
-    })
-      .formatToParts(new Date(iso))
-      .map((x) => [x.type, x.value]),
-  );
-  return `${p.year}-${p.month}-${p.day}T${p.hour}:${p.minute}`;
 }
 
 export default async function EditLogPage({ params }: { params: Promise<{ id: string }> }) {
@@ -44,7 +27,7 @@ export default async function EditLogPage({ params }: { params: Promise<{ id: st
     <>
       <PageHeader title={t("log.edit")} back={{ href: "/log", label: t("log.title") }} />
       <div className="flex flex-col gap-8">
-        <LogEditForm log={log} areas={areas} occurredLocal={localInput(log.occurred_at, timeZone)} />
+        <LogEditForm log={log} areas={areas} occurredLocal={localInputValue(log.occurred_at, timeZone)} />
         <DeleteButton action={deleteLog} id={log.id} label={t("log.delete")} />
       </div>
     </>
