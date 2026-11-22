@@ -30,20 +30,21 @@ jobs:
 
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 3.2.0
 
       - name: Link project
         run: supabase link --project-ref "$SUPABASE_PROJECT_ID" --password "$SUPABASE_DB_PASSWORD"
 
+      # Supabase CLI v3 targets the local database by default: --remote = the linked project.
       # The Phase 0 schema (files 20261115000001..14) was run by hand in the SQL Editor.
       # Record it as applied so `db push` does not run it a second time. Safe to repeat.
       - name: Mark Phase 0 migrations as applied
         run: |
           versions=$(ls supabase/migrations | grep -E '^20261115' | cut -d_ -f1 | tr '\n' ' ')
-          supabase migration repair --status applied $versions --password "$SUPABASE_DB_PASSWORD"
+          supabase migration repair --status applied $versions --remote --password "$SUPABASE_DB_PASSWORD"
 
       - name: Show pending migrations
-        run: supabase db push --dry-run --password "$SUPABASE_DB_PASSWORD"
+        run: supabase db push --dry-run --remote --password "$SUPABASE_DB_PASSWORD"
 
       - name: Apply migrations
-        run: supabase db push --password "$SUPABASE_DB_PASSWORD"
+        run: supabase db push --remote --password "$SUPABASE_DB_PASSWORD"
