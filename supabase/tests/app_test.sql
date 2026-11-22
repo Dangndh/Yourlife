@@ -118,6 +118,20 @@ select pg_temp.check((select daily_review_goal from lrn_preferences) = 20, 'defa
 select id as deck_id from lrn_decks \gset
 select set_config('test.deck_id', :'deck_id', false);
 
+-- Vocabulary media: only https recordings and pictures inside the user's own folder
+do $$ begin
+  update lrn_cards set audio_url = 'http://example.com/a.mp3' where term = 'apple';
+  raise exception 'FAILED: non-https audio accepted';
+exception when check_violation then raise notice 'ok: audio must be https';
+end $$;
+do $$ begin
+  update lrn_cards set image_path = '../etc/passwd' where term = 'apple';
+  raise exception 'FAILED: bad image path accepted';
+exception when check_violation then raise notice 'ok: image path must be <user>/vocab/<file>';
+end $$;
+update lrn_cards set image_path = '11111111-1111-1111-1111-111111111111/vocab/x-1.jpg', audio_url = 'https://api.dictionaryapi.dev/media/pronunciations/en/apple-us.mp3' where term = 'apple';
+select pg_temp.check((select count(*) from lrn_cards where image_path is not null and audio_url is not null) = 1, 'card keeps picture and recording');
+
 -- Row level security: another user sees none of it
 set request.jwt.claim.sub = '22222222-2222-2222-2222-222222222222';
 select pg_temp.check((select count(*) from goals) = 0, 'other user sees no goals');

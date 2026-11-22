@@ -14,7 +14,8 @@ import { finishReview, submitReview } from "../actions";
 import type { ReviewMode } from "../constants";
 import type { QueueCard } from "../queries";
 import { gradeAnswer, previewIntervals, ratingForGrade, RATINGS, schedule, STATE, type Grade, type Rating } from "../srs";
-import { canSpeak, speak } from "./speak";
+import { ensureAudio } from "../media-actions";
+import { canSpeak, playWord, speak } from "./speak";
 
 type CardMode = "flip" | "choice" | "type" | "listen";
 type Item = QueueCard & { availableAt: number };
@@ -125,14 +126,39 @@ function Session({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current?.id, current?.reps, cardMode]);
 
-  const say = useCallback((text: string, lang: string) => sound && speak(text, lang), [sound]);
+  // Real-speaker recordings: known ones come with the cards, the rest are looked up in the background.
+  const [audio, setAudio] = useState<Record<string, string>>(() =>
+    Object.fromEntries(cards.filter((c) => c.audio_url).map((c) => [c.id, c.audio_url as string])),
+  );
+  useEffect(() => {
+    const ids = cards.filter((c) => !c.audio_checked_at && c.language.startsWith("en")).map((c) => c.id);
+    let cancelled = false;
+    (async () => {
+      for (let i = 0; i < ids.length && !cancelled; i += 30) {
+        try {
+          const found = await ensureAudio(ids.slice(i, i + 30));
+          if (!cancelled) setAudio((a) => ({ ...a, ...found }));
+        } catch {
+          return;
+        }
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [cards]);
+
+  const playTerm = useCallback(() => {
+    if (current) playWord(current.term, current.language, audio[current.id]);
+  }, [current, audio]);
+  const say = useCallback(() => sound && playTerm(), [sound, playTerm]);
 
   // When a card appears: start the timer, read it out where useful, focus the input.
   useEffect(() => {
     if (!current) return;
     shownAt.current = Date.now();
-    if (cardMode === "listen") speak(current.term, current.language);
-    else if (cardMode === "flip" || cardMode === "choice") say(current.term, current.language);
+    if (cardMode === "listen") playTerm();
+    else if (cardMode === "flip" || cardMode === "choice") say();
     if (cardMode === "type" || cardMode === "listen") setTimeout(() => inputRef.current?.focus(), 30);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current?.id, current?.reps]);
@@ -173,7 +199,7 @@ function Session({
     const g = gradeAnswer(typed, current.term);
     setGrade(g);
     setRevealed(true);
-    say(current.term, current.language);
+    say();
   }, [current, grade, typed, say]);
 
   const pick = useCallback(
@@ -258,11 +284,17 @@ function Session({
           {current.state === STATE.new ? t("newWord") : t(`modeHint.${cardMode}`)}
         </span>
 
+        {/* Picture: a hint when writing the word, otherwise shown with the answer. */}
+        {current.image_url && (cardMode === "type" || revealed) && (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={current.image_url} alt="" className="bg-muted max-h-40 max-w-full rounded-lg object-contain" />
+        )}
+
         {/* Prompt */}
         {cardMode === "type" ? (
           <p className="text-2xl font-semibold break-words">{current.meaning}</p>
         ) : cardMode === "listen" ? (
-          <Button variant="outline" size="lg" onClick={() => speak(current.term, current.language)} className="h-16 w-16 rounded-full" aria-label={t("listenAgain")}>
+          <Button variant="outline" size="lg" onClick={playTerm} className="h-16 w-16 rounded-full" aria-label={t("listenAgain")}>
             <Volume2 className="size-7" />
           </Button>
         ) : (
@@ -270,7 +302,7 @@ function Session({
             <p className="text-3xl font-semibold break-words" lang={current.language}>
               {current.term}
             </p>
-            <Button variant="ghost" size="icon" onClick={() => speak(current.term, current.language)} aria-label={t("listen")}>
+            <Button variant="ghost" size="icon" onClick={playTerm} aria-label={t("listen")}>
               <Volume2 />
             </Button>
           </div>
@@ -286,7 +318,7 @@ function Session({
               <p className="text-2xl font-semibold" lang={current.language}>
                 {current.term}
               </p>
-              <Button variant="ghost" size="icon" onClick={() => speak(current.term, current.language)} aria-label={t("listen")}>
+              <Button variant="ghost" size="icon" onClick={playTerm} aria-label={t("listen")}>
                 <Volume2 />
               </Button>
             </div>
@@ -298,8 +330,18 @@ function Session({
         {revealed && (current.example || current.notes) && (
           <div className="text-muted-foreground mt-2 flex flex-col gap-1 text-sm">
             {current.example && (
-              <p className="italic" lang={current.language}>
+              <p className="inline-flex items-center justify-center gap-1 italic" lang={current.language}>
                 {current.example}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="size-7"
+                  onClick={() => speak(current.example!, current.language)}
+                  aria-label={t("listenExample")}
+                  title={t("listenExample")}
+                >
+                  <Volume2 className="size-3.5" />
+                </Button>
               </p>
             )}
             {current.example_meaning && <p>{current.example_meaning}</p>}
@@ -403,7 +445,7 @@ function Session({
           <div className="flex gap-2">
             {!grade ? (
               <>
-                <Button type="button" variant="outline" onClick={() => { setTyped(""); setGrade("wrong"); setRevealed(true); say(current.term, current.language); }}>
+                <Button type="button" variant="outline" onClick={() => { setTyped(""); setGrade("wrong"); setRevealed(true); say(); }}>
                   {t("dontKnow")}
                 </Button>
                 <Button type="submit" size="lg" className="flex-1">

@@ -14,18 +14,42 @@ import { cn } from "@/lib/utils";
 
 import { getSkillOptions } from "../queries";
 import { deleteCard, deleteDeck, resetCard } from "./actions";
-import { CardForm, DailyGoalForm, DeckForm, ImportForm } from "./components/deck-forms";
+import {
+  CardForm,
+  DailyGoalForm,
+  DeckForm,
+  ImportForm,
+} from "./components/deck-forms";
 import { ReviewSession } from "./components/review-session";
-import { SpeakButton } from "./components/speak";
-import { KNOWN_STABILITY_DAYS, languageName, REVIEW_MODES, type ReviewMode } from "./constants";
-import { getCard, getCards, getChoicePool, getDeck, getDecks, getReviewQueue, getVocabProgress, type DeckWithStats, type VocabCard } from "./queries";
+import { CardImage } from "./components/card-image";
+import { SpeakButton, VoicePicker } from "./components/speak";
+import {
+  KNOWN_STABILITY_DAYS,
+  languageName,
+  REVIEW_MODES,
+  type ReviewMode,
+} from "./constants";
+import {
+  getCard,
+  getCards,
+  getChoicePool,
+  getDeck,
+  getDecks,
+  getReviewQueue,
+  getVocabProgress,
+  type DeckWithStats,
+  type VocabCard,
+} from "./queries";
 import { STATE } from "./srs";
 
 type T = Awaited<ReturnType<typeof getTranslations>>;
 type SearchParams = Record<string, string | string[] | undefined>;
 const isId = (v: unknown): v is string => z.uuid().safeParse(v).success;
 const one = (v: string | string[] | undefined) => (Array.isArray(v) ? v[0] : v);
-const backToVocab = (t: T) => ({ href: "/learning/vocab", label: t("pages.vocab") });
+const backToVocab = (t: T) => ({
+  href: "/learning/vocab",
+  label: t("pages.vocab"),
+});
 
 function reviewHref(deckId?: string, mode?: ReviewMode) {
   const q = new URLSearchParams();
@@ -36,10 +60,16 @@ function reviewHref(deckId?: string, mode?: ReviewMode) {
 }
 
 /** Status of one card, e.g. "New", "Learning", "Known", "in 4 d". */
-function cardStatus(c: VocabCard, t: T): { label: string; tone: "new" | "learning" | "known" | "review" } {
-  if (c.state === STATE.new) return { label: t("vocab.state.new"), tone: "new" };
-  if (c.state !== STATE.review) return { label: t("vocab.state.learning"), tone: "learning" };
-  if ((c.stability ?? 0) >= KNOWN_STABILITY_DAYS) return { label: t("vocab.state.known"), tone: "known" };
+function cardStatus(
+  c: VocabCard,
+  t: T,
+): { label: string; tone: "new" | "learning" | "known" | "review" } {
+  if (c.state === STATE.new)
+    return { label: t("vocab.state.new"), tone: "new" };
+  if (c.state !== STATE.review)
+    return { label: t("vocab.state.learning"), tone: "learning" };
+  if ((c.stability ?? 0) >= KNOWN_STABILITY_DAYS)
+    return { label: t("vocab.state.known"), tone: "known" };
   return { label: t("vocab.state.young"), tone: "review" };
 }
 
@@ -55,19 +85,34 @@ function StatPills({ deck, t }: { deck: DeckWithStats; t: T }) {
   const s = deck.stats;
   const items = [
     { label: t("vocab.state.new"), value: s.new_cards, cls: "bg-sky-500" },
-    { label: t("vocab.state.learning"), value: s.learning + s.young, cls: "bg-amber-500" },
+    {
+      label: t("vocab.state.learning"),
+      value: s.learning + s.young,
+      cls: "bg-amber-500",
+    },
     { label: t("vocab.state.known"), value: s.known, cls: "bg-emerald-500" },
   ];
   return (
     <div className="flex flex-col gap-2">
-      <div className="bg-muted flex h-2 overflow-hidden rounded-full" aria-hidden>
-        {s.total > 0 && items.map((i) => <div key={i.label} className={i.cls} style={{ width: `${(i.value / s.total) * 100}%` }} />)}
+      <div
+        className="bg-muted flex h-2 overflow-hidden rounded-full"
+        aria-hidden
+      >
+        {s.total > 0 &&
+          items.map((i) => (
+            <div
+              key={i.label}
+              className={i.cls}
+              style={{ width: `${(i.value / s.total) * 100}%` }}
+            />
+          ))}
       </div>
       <div className="text-muted-foreground flex flex-wrap gap-x-3 gap-y-1 text-xs">
         {items.map((i) => (
           <span key={i.label} className="inline-flex items-center gap-1">
             <span className={cn("size-2 rounded-full", i.cls)} />
-            {i.label} <span className="text-foreground tabular-nums">{i.value}</span>
+            {i.label}{" "}
+            <span className="text-foreground tabular-nums">{i.value}</span>
           </span>
         ))}
       </div>
@@ -94,41 +139,85 @@ async function ProgressCard({ compact }: { compact?: boolean }) {
       <CardHeader className="flex-row items-center justify-between gap-2">
         <CardTitle>{t("vocab.today")}</CardTitle>
         {decks.length > 0 && (
-          <Button asChild size="sm" disabled={due === 0} variant={due ? "default" : "outline"}>
-            <Link href={reviewHref()}>{due ? t("vocab.reviewAll", { count: due }) : t("vocab.allDone")}</Link>
+          <Button
+            asChild
+            size="sm"
+            disabled={due === 0}
+            variant={due ? "default" : "outline"}
+          >
+            <Link href={reviewHref()}>
+              {due ? t("vocab.reviewAll", { count: due }) : t("vocab.allDone")}
+            </Link>
           </Button>
         )}
       </CardHeader>
       <CardContent className="flex flex-col gap-4">
         {decks.length === 0 ? (
-          <Link href="/learning/vocab/new" className="text-muted-foreground hover:text-foreground text-sm">
+          <Link
+            href="/learning/vocab/new"
+            className="text-muted-foreground hover:text-foreground text-sm"
+          >
             {t("vocab.noDecks")}
           </Link>
         ) : (
           <>
             <div className="flex flex-wrap items-end gap-x-6 gap-y-2">
               <div>
-                <span className="text-2xl font-semibold tabular-nums">{p.today}</span>
-                <span className="text-muted-foreground text-sm"> / {p.goal}</span>
-                <div className="text-muted-foreground text-xs">{t("vocab.reviewsToday")}</div>
+                <span className="text-2xl font-semibold tabular-nums">
+                  {p.today}
+                </span>
+                <span className="text-muted-foreground text-sm">
+                  {" "}
+                  / {p.goal}
+                </span>
+                <div className="text-muted-foreground text-xs">
+                  {t("vocab.reviewsToday")}
+                </div>
               </div>
               <div className="flex items-center gap-1.5">
-                <Flame className={cn("size-6", p.streak > 0 ? "text-orange-500" : "text-muted-foreground/40")} />
+                <Flame
+                  className={cn(
+                    "size-6",
+                    p.streak > 0
+                      ? "text-orange-500"
+                      : "text-muted-foreground/40",
+                  )}
+                />
                 <div>
-                  <span className="text-2xl font-semibold tabular-nums">{p.streak}</span>
-                  <div className="text-muted-foreground text-xs">{t("vocab.streakDays")}</div>
+                  <span className="text-2xl font-semibold tabular-nums">
+                    {p.streak}
+                  </span>
+                  <div className="text-muted-foreground text-xs">
+                    {t("vocab.streakDays")}
+                  </div>
                 </div>
               </div>
             </div>
-            <Progress value={p.today / p.goal} label={t("vocab.reviewsToday")} />
+            <Progress
+              value={p.today / p.goal}
+              label={t("vocab.reviewsToday")}
+            />
             {!compact && (
-              <div className="flex h-12 items-end gap-0.5" role="img" aria-label={t("vocab.last30")}>
+              <div
+                className="flex h-12 items-end gap-0.5"
+                role="img"
+                aria-label={t("vocab.last30")}
+              >
                 {p.days.map((d) => (
                   <div
                     key={d.day}
                     title={`${d.day}: ${d.reviews}`}
-                    className={cn("flex-1 rounded-sm", d.reviews >= p.goal ? "bg-emerald-500" : d.reviews > 0 ? "bg-emerald-500/40" : "bg-muted")}
-                    style={{ height: `${Math.max(8, (d.reviews / max) * 100)}%` }}
+                    className={cn(
+                      "flex-1 rounded-sm",
+                      d.reviews >= p.goal
+                        ? "bg-emerald-500"
+                        : d.reviews > 0
+                          ? "bg-emerald-500/40"
+                          : "bg-muted",
+                    )}
+                    style={{
+                      height: `${Math.max(8, (d.reviews / max) * 100)}%`,
+                    }}
                   />
                 ))}
               </div>
@@ -179,15 +268,24 @@ async function VocabPage() {
                 <CardHeader className="flex-row items-start justify-between gap-3">
                   <div className="min-w-0">
                     <CardTitle className="break-words">
-                      <Link href={`/learning/vocab/${d.id}`} className="hover:underline">
+                      <Link
+                        href={`/learning/vocab/${d.id}`}
+                        className="hover:underline"
+                      >
                         {d.name}
                       </Link>
                     </CardTitle>
                     <p className="text-muted-foreground mt-1 text-xs">
-                      {languageName(d.language, locale)} · {t("vocab.cardCount", { count: d.stats.total })}
+                      {languageName(d.language, locale)} ·{" "}
+                      {t("vocab.cardCount", { count: d.stats.total })}
                     </p>
                   </div>
-                  <Button asChild size="sm" variant={d.dueToday + d.newToday ? "default" : "outline"} disabled={!d.dueToday && !d.newToday}>
+                  <Button
+                    asChild
+                    size="sm"
+                    variant={d.dueToday + d.newToday ? "default" : "outline"}
+                    disabled={!d.dueToday && !d.newToday}
+                  >
                     <Link href={reviewHref(d.id)}>{t("vocab.study")}</Link>
                   </Button>
                 </CardHeader>
@@ -226,8 +324,15 @@ async function ReviewPage({ searchParams }: { searchParams: SearchParams }) {
   const deckParam = one(searchParams.deck);
   const deckId = isId(deckParam) ? deckParam : undefined;
   const modeParam = one(searchParams.mode);
-  const mode: ReviewMode = (REVIEW_MODES as readonly string[]).includes(modeParam ?? "") ? (modeParam as ReviewMode) : "mix";
-  const [decks, cards] = await Promise.all([getDecks(), getReviewQueue(deckId)]);
+  const mode: ReviewMode = (REVIEW_MODES as readonly string[]).includes(
+    modeParam ?? "",
+  )
+    ? (modeParam as ReviewMode)
+    : "mix";
+  const [decks, cards] = await Promise.all([
+    getDecks(),
+    getReviewQueue(deckId),
+  ]);
   const deck = deckId ? decks.find((d) => d.id === deckId) : undefined;
   if (deckId && !deck) notFound();
   const pool = await getChoicePool(deck ? [deck.id] : decks.map((d) => d.id));
@@ -235,7 +340,9 @@ async function ReviewPage({ searchParams }: { searchParams: SearchParams }) {
   return (
     <>
       <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
-        <h1 className="text-lg font-semibold break-words">{deck ? deck.name : t("vocab.allDecks")}</h1>
+        <h1 className="text-lg font-semibold break-words">
+          {deck ? deck.name : t("vocab.allDecks")}
+        </h1>
         <nav className="flex flex-wrap gap-1" aria-label={t("vocab.modeLabel")}>
           {REVIEW_MODES.map((m) => (
             <Link
@@ -244,7 +351,9 @@ async function ReviewPage({ searchParams }: { searchParams: SearchParams }) {
               aria-current={m === mode ? "page" : undefined}
               className={cn(
                 "rounded-full border px-3 py-1 text-xs",
-                m === mode ? "bg-primary text-primary-foreground border-primary" : "hover:bg-accent text-muted-foreground",
+                m === mode
+                  ? "bg-primary text-primary-foreground border-primary"
+                  : "hover:bg-accent text-muted-foreground",
               )}
             >
               {t(`vocab.mode.${m}`)}
@@ -252,26 +361,52 @@ async function ReviewPage({ searchParams }: { searchParams: SearchParams }) {
           ))}
         </nav>
       </div>
-      <ReviewSession key={`${deckId ?? "all"}-${mode}`} cards={cards} pool={pool} mode={mode} backHref={backHref} />
+      <ReviewSession
+        key={`${deckId ?? "all"}-${mode}`}
+        cards={cards}
+        pool={pool}
+        mode={mode}
+        backHref={backHref}
+      />
     </>
   );
 }
 
-async function DeckPage({ id, searchParams }: { id: string; searchParams: SearchParams }) {
+async function DeckPage({
+  id,
+  searchParams,
+}: {
+  id: string;
+  searchParams: SearchParams;
+}) {
   const t = await getTranslations();
   const locale = await getLocale();
   const deck = await getDeck(id);
   if (!deck) notFound();
-  const skills = (await getSkillOptions()).map((s) => ({ id: s.id, name: s.name }));
+  const skills = (await getSkillOptions()).map((s) => ({
+    id: s.id,
+    name: s.name,
+  }));
 
   if (one(searchParams.edit) === "1") {
     return (
       <>
-        <PageHeader title={t("vocab.editDeck")} back={{ href: `/learning/vocab/${id}`, label: deck.name }} />
+        <PageHeader
+          title={t("vocab.editDeck")}
+          back={{ href: `/learning/vocab/${id}`, label: deck.name }}
+        />
         <Card>
           <CardContent className="flex flex-col gap-6 pt-6">
-            <DeckForm deck={deck} skills={skills} cancelHref={`/learning/vocab/${id}`} />
-            <DeleteButton action={deleteDeck} id={deck.id} label={t("vocab.deleteDeck")} />
+            <DeckForm
+              deck={deck}
+              skills={skills}
+              cancelHref={`/learning/vocab/${id}`}
+            />
+            <DeleteButton
+              action={deleteDeck}
+              id={deck.id}
+              label={t("vocab.deleteDeck")}
+            />
           </CardContent>
         </Card>
       </>
@@ -284,30 +419,74 @@ async function DeckPage({ id, searchParams }: { id: string; searchParams: Search
     if (!card || card.deck_id !== id) notFound();
     return (
       <>
-        <PageHeader title={t("vocab.editCard")} back={{ href: `/learning/vocab/${id}`, label: deck.name }} />
-        <Card>
-          <CardContent className="flex flex-col gap-6 pt-6">
-            <CardForm deckId={id} card={card} cancelHref={`/learning/vocab/${id}`} />
-            <div className="text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
-              <span>{cardStatus(card, t).label}</span>
-              {card.state !== STATE.new && <span>{dueLabel(card, t)}</span>}
-              <span>{t("vocab.repsLapses", { reps: card.reps, lapses: card.lapses })}</span>
-            </div>
-            <div className="flex flex-wrap items-start gap-6">
-              {card.state !== STATE.new && (
-                <form action={resetCard}>
-                  <input type="hidden" name="id" value={card.id} />
-                  <input type="hidden" name="deck_id" value={id} />
-                  <button type="submit" className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-sm">
-                    <RotateCcw className="size-4" />
-                    {t("vocab.resetCard")}
-                  </button>
-                </form>
-              )}
-              <DeleteButton action={deleteCard} id={card.id} label={t("vocab.deleteCard")} />
-            </div>
-          </CardContent>
-        </Card>
+        <PageHeader
+          title={t("vocab.editCard")}
+          back={{ href: `/learning/vocab/${id}`, label: deck.name }}
+          actions={
+            <SpeakButton
+              text={card.term}
+              lang={deck.language}
+              audioUrl={card.audio_url}
+              size="sm"
+            />
+          }
+        />
+        <div className="grid gap-4 lg:grid-cols-3">
+          <Card className="lg:col-span-2">
+            <CardContent className="flex flex-col gap-6 pt-6">
+              <CardForm
+                deckId={id}
+                card={card}
+                cancelHref={`/learning/vocab/${id}`}
+              />
+              <div className="text-muted-foreground flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
+                <span>{cardStatus(card, t).label}</span>
+                {card.state !== STATE.new && <span>{dueLabel(card, t)}</span>}
+                <span>
+                  {t("vocab.repsLapses", {
+                    reps: card.reps,
+                    lapses: card.lapses,
+                  })}
+                </span>
+              </div>
+              <div className="flex flex-wrap items-start gap-6">
+                {card.state !== STATE.new && (
+                  <form action={resetCard}>
+                    <input type="hidden" name="id" value={card.id} />
+                    <input type="hidden" name="deck_id" value={id} />
+                    <button
+                      type="submit"
+                      className="text-muted-foreground hover:text-foreground inline-flex items-center gap-1.5 text-sm"
+                    >
+                      <RotateCcw className="size-4" />
+                      {t("vocab.resetCard")}
+                    </button>
+                  </form>
+                )}
+                <DeleteButton
+                  action={deleteCard}
+                  id={card.id}
+                  label={t("vocab.deleteCard")}
+                />
+              </div>
+            </CardContent>
+          </Card>
+          <Card className="h-fit">
+            <CardHeader>
+              <CardTitle>{t("vocab.image")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardImage
+                cardId={card.id}
+                imageUrl={card.image_url ?? null}
+                credit={card.image_credit}
+                defaultQuery={
+                  deck.language.startsWith("en") ? card.term : card.meaning
+                }
+              />
+            </CardContent>
+          </Card>
+        </div>
       </>
     );
   }
@@ -329,7 +508,11 @@ async function DeckPage({ id, searchParams }: { id: string; searchParams: Search
               </Link>
             </Button>
             <Button asChild disabled={!due}>
-              <Link href={reviewHref(id)}>{due ? t("vocab.studyCount", { count: due }) : t("vocab.allDone")}</Link>
+              <Link href={reviewHref(id)}>
+                {due
+                  ? t("vocab.studyCount", { count: due })
+                  : t("vocab.allDone")}
+              </Link>
             </Button>
           </>
         }
@@ -347,32 +530,63 @@ async function DeckPage({ id, searchParams }: { id: string; searchParams: Search
           <Card>
             <CardHeader>
               <CardTitle>
-                {t("vocab.words")} <span className="text-muted-foreground font-normal">{cards.length}</span>
+                {t("vocab.words")}{" "}
+                <span className="text-muted-foreground font-normal">
+                  {cards.length}
+                </span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               {cards.length === 0 ? (
-                <p className="text-muted-foreground text-sm">{t("vocab.noCards")}</p>
+                <p className="text-muted-foreground text-sm">
+                  {t("vocab.noCards")}
+                </p>
               ) : (
                 <ul className="divide-y">
                   {cards.map((c) => {
                     const st = cardStatus(c, t);
                     return (
                       <li key={c.id} className="flex items-center gap-2 py-2">
-                        <SpeakButton text={c.term} lang={deck.language} />
-                        <Link href={`/learning/vocab/${id}?card=${c.id}`} className="min-w-0 flex-1 hover:underline">
-                          <span className="text-sm font-medium break-words" lang={deck.language}>
+                        <SpeakButton
+                          text={c.term}
+                          lang={deck.language}
+                          audioUrl={c.audio_url}
+                        />
+                        {c.image_url && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={c.image_url}
+                            alt=""
+                            className="bg-muted size-9 shrink-0 rounded object-cover"
+                            loading="lazy"
+                          />
+                        )}
+                        <Link
+                          href={`/learning/vocab/${id}?card=${c.id}`}
+                          className="min-w-0 flex-1 hover:underline"
+                        >
+                          <span
+                            className="text-sm font-medium break-words"
+                            lang={deck.language}
+                          >
                             {c.term}
                           </span>
-                          <span className="text-muted-foreground ml-2 text-sm break-words">{c.meaning}</span>
+                          <span className="text-muted-foreground ml-2 text-sm break-words">
+                            {c.meaning}
+                          </span>
                         </Link>
-                        <span className="text-muted-foreground hidden text-xs sm:inline">{dueLabel(c, t)}</span>
+                        <span className="text-muted-foreground hidden text-xs sm:inline">
+                          {dueLabel(c, t)}
+                        </span>
                         <Badge
                           variant="outline"
                           className={cn(
-                            st.tone === "new" && "border-sky-500/50 text-sky-700 dark:text-sky-300",
-                            st.tone === "learning" && "border-amber-500/50 text-amber-700 dark:text-amber-300",
-                            st.tone === "known" && "border-emerald-500/50 text-emerald-700 dark:text-emerald-300",
+                            st.tone === "new" &&
+                              "border-sky-500/50 text-sky-700 dark:text-sky-300",
+                            st.tone === "learning" &&
+                              "border-amber-500/50 text-amber-700 dark:text-amber-300",
+                            st.tone === "known" &&
+                              "border-emerald-500/50 text-emerald-700 dark:text-emerald-300",
                           )}
                         >
                           {st.label}
@@ -395,11 +609,30 @@ async function DeckPage({ id, searchParams }: { id: string; searchParams: Search
               <TodayCounts deck={deck} t={t} />
               <div className="flex flex-wrap gap-1 pt-1">
                 {REVIEW_MODES.filter((m) => m !== "mix").map((m) => (
-                  <Link key={m} href={reviewHref(id, m)} className="hover:bg-accent text-muted-foreground rounded-full border px-3 py-1 text-xs">
+                  <Link
+                    key={m}
+                    href={reviewHref(id, m)}
+                    className="hover:bg-accent text-muted-foreground rounded-full border px-3 py-1 text-xs"
+                  >
                     {t(`vocab.mode.${m}`)}
                   </Link>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader>
+              <CardTitle>{t("vocab.voice")}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <VoicePicker
+                lang={deck.language}
+                sample={
+                  cards.find((c) => c.example)?.example ??
+                  cards[0]?.term ??
+                  deck.name
+                }
+              />
             </CardContent>
           </Card>
           <Card>
@@ -418,7 +651,10 @@ async function DeckPage({ id, searchParams }: { id: string; searchParams: Search
 
 async function NewDeckPage() {
   const t = await getTranslations();
-  const skills = (await getSkillOptions()).map((s) => ({ id: s.id, name: s.name }));
+  const skills = (await getSkillOptions()).map((s) => ({
+    id: s.id,
+    name: s.name,
+  }));
   return (
     <>
       <PageHeader title={t("vocab.newDeck")} back={backToVocab(t)} />
@@ -431,7 +667,13 @@ async function NewDeckPage() {
   );
 }
 
-async function VocabDetail({ id, searchParams }: { id: string; searchParams: SearchParams }) {
+async function VocabDetail({
+  id,
+  searchParams,
+}: {
+  id: string;
+  searchParams: SearchParams;
+}) {
   if (id === "new") return <NewDeckPage />;
   if (id === "review") return <ReviewPage searchParams={searchParams} />;
   if (!isId(id)) notFound();
