@@ -680,6 +680,21 @@
       "pronunciation": "Pronunciation",
       "example": "Example sentence",
       "exampleMeaning": "Example meaning"
-    }
+    },
+    "realVoice": "Listen (real speaker)",
+    "listenExample": "Listen to the example",
+    "voice": "Voice",
+    "voiceHint": "Voices come from this device and browser. The most natural ones are \"Natural\"/\"Online\" voices in Microsoft Edge, \"Google\" voices in Chrome and \"Enhanced/Premium\" voices on iPhone and Mac. Real-speaker recordings (blue speaker icon) are used whenever a dictionary has one.",
+    "noVoices": "This browser has no voices for this language.",
+    "image": "Picture",
+    "noImage": "No picture yet. A picture helps you remember the word.",
+    "uploadImage": "Upload a photo",
+    "removeImage": "Remove",
+    "searchImages": "Search pictures",
+    "search": "Search",
+    "searchFailed": "Picture search isn't available right now. Try again later.",
+    "noResults": "No pictures found. Try another word (English works best).",
+    "openverseNote": "Free, openly licensed pictures from Openverse. Tap one to use it.",
+    "imageFailed": "Couldn't save the picture. Use a JPG or PNG under 2 MB."
   }
 }

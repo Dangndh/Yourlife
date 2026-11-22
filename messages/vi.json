@@ -680,6 +680,21 @@
       "pronunciation": "Phiên âm",
       "example": "Câu ví dụ",
       "exampleMeaning": "Nghĩa câu ví dụ"
-    }
+    },
+    "realVoice": "Nghe (giọng người thật)",
+    "listenExample": "Nghe câu ví dụ",
+    "voice": "Giọng đọc",
+    "voiceHint": "Giọng đọc có sẵn trên máy và trình duyệt của bạn. Tự nhiên nhất là các giọng \"Natural\"/\"Online\" trên Microsoft Edge, giọng \"Google\" trên Chrome, và giọng \"Nâng cao\" (Enhanced/Premium) trên iPhone và Mac. Từ nào có bản ghi giọng người thật trong từ điển (biểu tượng loa màu xanh) thì app dùng bản ghi đó.",
+    "noVoices": "Trình duyệt này chưa có giọng đọc cho ngôn ngữ này.",
+    "image": "Hình ảnh",
+    "noImage": "Chưa có hình. Có hình sẽ giúp bạn nhớ từ lâu hơn.",
+    "uploadImage": "Tải ảnh lên",
+    "removeImage": "Bỏ hình",
+    "searchImages": "Tìm hình",
+    "search": "Tìm",
+    "searchFailed": "Chức năng tìm hình đang tạm lỗi. Vui lòng thử lại sau.",
+    "noResults": "Không tìm thấy hình. Thử từ khác (tìm bằng tiếng Anh cho kết quả tốt nhất).",
+    "openverseNote": "Hình miễn phí, được phép sử dụng, lấy từ Openverse. Bấm vào một hình để chọn.",
+    "imageFailed": "Không lưu được hình. Hãy dùng ảnh JPG hoặc PNG dưới 2 MB."
   }
 }

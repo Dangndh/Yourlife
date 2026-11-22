@@ -7,6 +7,7 @@ import { z } from "zod";
 import { createClient } from "@/lib/supabase/server";
 
 import { DECK_LANGUAGES } from "./constants";
+import { ensureAudio } from "./media-actions";
 import { CARD_COLS, type VocabCard } from "./queries";
 import { schedule, type Rating } from "./srs";
 import { parseCardList, termKey } from "./text";
@@ -108,8 +109,12 @@ export async function saveCard(prev: VocabFormState, formData: FormData): Promis
   if (!parsed.success) return failed(prev, raw, parsed.error);
   const supabase = await createClient();
   if (isId(raw.id)) {
-    const { error } = await supabase.from("lrn_cards").update(parsed.data).eq("id", raw.id);
+    const { data: before } = await supabase.from("lrn_cards").select("term").eq("id", raw.id).maybeSingle();
+    // A changed word needs its recording looked up again.
+    const audioReset = before && termKey(before.term) !== termKey(parsed.data.term) ? { audio_url: null, audio_checked_at: null } : {};
+    const { error } = await supabase.from("lrn_cards").update({ ...parsed.data, ...audioReset }).eq("id", raw.id);
     if (error) return failed(prev, raw, "saveFailed");
+    if ("audio_url" in audioReset) await ensureAudio([raw.id]);
     refresh();
     redirect(`/learning/vocab/${raw.deck_id}`);
   }
@@ -122,8 +127,14 @@ export async function saveCard(prev: VocabFormState, formData: FormData): Promis
   if (same?.length && raw.allow_duplicate !== "1") {
     return { ...failed(prev, raw, "x"), error: undefined, fieldErrors: { term: "duplicate" } };
   }
-  const { error } = await supabase.from("lrn_cards").insert({ ...parsed.data, deck_id: raw.deck_id });
-  if (error) return failed(prev, raw, "saveFailed");
+  const { data: created, error } = await supabase
+    .from("lrn_cards")
+    .insert({ ...parsed.data, deck_id: raw.deck_id })
+    .select("id")
+    .single();
+  if (error || !created) return failed(prev, raw, "saveFailed");
+  // Fetch the recording (and IPA) right away for one word; lists are done during review.
+  await ensureAudio([created.id]);
   refresh();
   return { ok: (prev.ok ?? 0) + 1 };
 }

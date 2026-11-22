@@ -36,11 +36,28 @@ export type VocabCard = {
   last_review_at: string | null;
   reps: number;
   lapses: number;
+  image_path: string | null;
+  image_credit: string | null;
+  audio_url: string | null;
+  audio_checked_at: string | null;
+  /** Signed URL for image_path, filled in by withImageUrls. */
+  image_url?: string | null;
 };
 
 const DECK_COLS = "id, name, language, description, new_per_day, skill_id";
 export const CARD_COLS =
-  "id, deck_id, term, meaning, pronunciation, example, example_meaning, notes, state, step, stability, difficulty, due_at, last_review_at, reps, lapses";
+  "id, deck_id, term, meaning, pronunciation, example, example_meaning, notes, state, step, stability, difficulty, due_at, last_review_at, reps, lapses, image_path, image_credit, audio_url, audio_checked_at";
+export const IMAGE_BUCKET = "attachments";
+
+/** Adds short-lived signed URLs for card pictures (the bucket is private). */
+export async function withImageUrls<C extends VocabCard>(cards: C[]): Promise<C[]> {
+  const paths = Array.from(new Set(cards.map((c) => c.image_path).filter((p): p is string => !!p)));
+  if (!paths.length) return cards;
+  const supabase = await createClient();
+  const { data } = await supabase.storage.from(IMAGE_BUCKET).createSignedUrls(paths, 60 * 60 * 6);
+  const urls = new Map((data ?? []).filter((d) => d.signedUrl && d.path).map((d) => [d.path as string, d.signedUrl]));
+  return cards.map((c) => ({ ...c, image_url: c.image_path ? (urls.get(c.image_path) ?? null) : null }));
+}
 const EMPTY: DeckStats = { total: 0, new_cards: 0, learning: 0, young: 0, known: 0, due_now: 0 };
 
 async function todayBounds() {
@@ -100,13 +117,14 @@ export async function getCards(deckId: string): Promise<VocabCard[]> {
     .is("deleted_at", null)
     .order("created_at", { ascending: false })
     .limit(2000);
-  return (data ?? []) as VocabCard[];
+  return withImageUrls((data ?? []) as VocabCard[]);
 }
 
 export async function getCard(id: string): Promise<VocabCard | null> {
   const supabase = await createClient();
   const { data } = await supabase.from("lrn_cards").select(CARD_COLS).eq("id", id).is("deleted_at", null).maybeSingle();
-  return (data as VocabCard | null) ?? null;
+  const card = data as VocabCard | null;
+  return card ? (await withImageUrls([card]))[0] : null;
 }
 
 export type QueueCard = VocabCard & { language: string };
@@ -146,7 +164,7 @@ export async function getReviewQueue(deckId?: string): Promise<QueueCard[]> {
       .limit(d.newToday);
     fresh.push(...((data ?? []) as VocabCard[]));
   }
-  return [...((due ?? []) as VocabCard[]), ...fresh].map((c) => ({ ...c, language: lang.get(c.deck_id) ?? "en-US" }));
+  return withImageUrls([...((due ?? []) as VocabCard[]), ...fresh].map((c) => ({ ...c, language: lang.get(c.deck_id) ?? "en-US" })));
 }
 
 /** Terms and meanings to build wrong options for multiple choice. */

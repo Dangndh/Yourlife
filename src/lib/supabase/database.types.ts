@@ -1471,6 +1471,8 @@ export type Database = {
       }
       lrn_cards: {
         Row: {
+          audio_checked_at: string | null
+          audio_url: string | null
           created_at: string
           deck_id: string
           deleted_at: string | null
@@ -1479,6 +1481,8 @@ export type Database = {
           example: string | null
           example_meaning: string | null
           id: string
+          image_credit: string | null
+          image_path: string | null
           lapses: number
           last_review_at: string | null
           meaning: string
@@ -1494,6 +1498,8 @@ export type Database = {
         }
         ComputedFields: never
         Insert: {
+          audio_checked_at?: string | null
+          audio_url?: string | null
           created_at?: string
           deck_id: string
           deleted_at?: string | null
@@ -1502,6 +1508,8 @@ export type Database = {
           example?: string | null
           example_meaning?: string | null
           id?: string
+          image_credit?: string | null
+          image_path?: string | null
           lapses?: number
           last_review_at?: string | null
           meaning: string
@@ -1516,6 +1524,8 @@ export type Database = {
           user_id?: string
         }
         Update: {
+          audio_checked_at?: string | null
+          audio_url?: string | null
           created_at?: string
           deck_id?: string
           deleted_at?: string | null
@@ -1524,6 +1534,8 @@ export type Database = {
           example?: string | null
           example_meaning?: string | null
           id?: string
+          image_credit?: string | null
+          image_path?: string | null
           lapses?: number
           last_review_at?: string | null
           meaning?: string
