@@ -39,7 +39,7 @@ export async function getGoalOptions(): Promise<Pick<Goal, "id" | "title" | "lif
     .is("deleted_at", null)
     .in("status", ["planned", "active", "paused"])
     .order("title");
-  return data ?? [];
+  return (data ?? []) as Pick<Goal, "id" | "title" | "life_area_id" | "status">[];
 }
 
 export async function getProjectOptions(): Promise<Pick<Project, "id" | "title" | "life_area_id" | "goal_id">[]> {

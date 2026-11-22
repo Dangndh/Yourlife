@@ -53,11 +53,15 @@
   },
   "login": {
     "title": "Đăng nhập YourLife",
-    "description": "Chúng tôi sẽ gửi link đăng nhập qua email. Không cần mật khẩu.",
+    "description": "Dùng tài khoản Google, hoặc nhận liên kết đăng nhập qua email. Không cần mật khẩu.",
     "email": "Email",
     "submit": "Gửi link đăng nhập",
     "sent": "Hãy kiểm tra hộp thư: link đăng nhập đã được gửi tới {email}.",
-    "error": "Không gửi được link. Vui lòng thử lại."
+    "error": "Không gửi được link. Vui lòng thử lại.",
+    "google": "Tiếp tục với Google",
+    "or": "hoặc",
+    "googleError": "Hiện chưa đăng nhập Google được. Hãy dùng liên kết qua email.",
+    "linkError": "Liên kết đăng nhập không dùng được hoặc đã hết hạn. Hãy thử lại."
   },
   "home": {
     "title": "Trung tâm điều khiển",
@@ -83,7 +87,17 @@
     "languageHint": "Ngôn ngữ giao diện. Dữ liệu của bạn có thể viết bằng bất kỳ ngôn ngữ nào.",
     "save": "Lưu",
     "baseCurrency": "Tiền tệ gốc",
-    "baseCurrencyHint": "Mọi tổng được quy về tiền tệ này. USD và EUR dùng tỷ giá bạn nhập."
+    "baseCurrencyHint": "Mọi tổng được quy về tiền tệ này. USD và EUR dùng tỷ giá bạn nhập.",
+    "theme": "Giao diện",
+    "themeHint": "Sáng, tối, hoặc theo thiết bị này.",
+    "themes": {
+      "system": "Theo thiết bị",
+      "light": "Sáng",
+      "dark": "Tối"
+    },
+    "backup": "Sao lưu",
+    "backupHint": "Tải toàn bộ dữ liệu bạn đã nhập về một tệp JSON. Làm mỗi tuần một lần và cất tệp ở nơi an toàn (VD Google Drive).",
+    "exportAll": "Xuất toàn bộ dữ liệu"
   },
   "planning": {
     "goalsSubtitle": "Những điều bạn muốn đạt được trong từng lĩnh vực",

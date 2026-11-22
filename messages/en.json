@@ -53,11 +53,15 @@
   },
   "login": {
     "title": "Sign in to YourLife",
-    "description": "We will email you a sign-in link. No password needed.",
+    "description": "Use your Google account, or get a sign-in link by email. No password needed.",
     "email": "Email",
     "submit": "Send magic link",
     "sent": "Check your inbox: we sent a sign-in link to {email}.",
-    "error": "Could not send the link. Please try again."
+    "error": "Could not send the link. Please try again.",
+    "google": "Continue with Google",
+    "or": "or",
+    "googleError": "Google sign-in is not available right now. Use the email link instead.",
+    "linkError": "That sign-in link did not work or has expired. Please try again."
   },
   "home": {
     "title": "Command Center",
@@ -83,7 +87,17 @@
     "languageHint": "Interface language. Your own data can be written in any language.",
     "save": "Save",
     "baseCurrency": "Base currency",
-    "baseCurrencyHint": "All totals are converted to this currency. USD and EUR use the exchange rates you enter."
+    "baseCurrencyHint": "All totals are converted to this currency. USD and EUR use the exchange rates you enter.",
+    "theme": "Appearance",
+    "themeHint": "Light, dark, or follow this device.",
+    "themes": {
+      "system": "Same as device",
+      "light": "Light",
+      "dark": "Dark"
+    },
+    "backup": "Backup",
+    "backupHint": "Download everything you have entered as one JSON file. Do it once a week and keep the file somewhere safe (e.g. Google Drive).",
+    "exportAll": "Export all data"
   },
   "planning": {
     "goalsSubtitle": "What you want to achieve in each life area",

@@ -17,4 +17,34 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npx tsc --noEmit
+      - run: npm test
       - run: npm run build
+
+  # Builds the schema from supabase/migrations in a throwaway Postgres (never the real database),
+  # runs the SQL tests, and checks that the generated TypeScript types are up to date.
+  database:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run db:types
+      - name: Types match the migrations
+        run: |
+          git diff --exit-code src/lib/supabase/database.types.ts || {
+            echo "::error::database.types.ts is out of date. Run 'npm run db:types' against an empty Postgres and commit it."
+            exit 1
+          }

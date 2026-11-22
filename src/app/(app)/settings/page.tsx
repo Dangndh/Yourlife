@@ -1,11 +1,14 @@
+import { cookies } from "next/headers";
 import { getLocale, getTranslations } from "next-intl/server";
+import { Download } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { createClient } from "@/lib/supabase/server";
+import { parseTheme, THEME_COOKIE, THEMES } from "@/lib/theme";
 
-import { setLocale } from "./actions";
+import { setLocale, setTheme } from "./actions";
 
 export async function generateMetadata() {
   const t = await getTranslations("nav");
@@ -15,6 +18,7 @@ export async function generateMetadata() {
 export default async function SettingsPage() {
   const t = await getTranslations();
   const locale = await getLocale();
+  const theme = parseTheme((await cookies()).get(THEME_COOKIE)?.value);
   const supabase = await createClient();
   const { data: profile } = await supabase.from("profiles").select("currency").maybeSingle();
 
@@ -32,7 +36,7 @@ export default async function SettingsPage() {
               <select
                 name="locale"
                 defaultValue={locale}
-                className="border-input h-9 rounded-md border bg-transparent px-3 text-sm"
+                className="border-input bg-background h-9 rounded-md border px-3 text-sm"
               >
                 <option value="en">English</option>
                 <option value="vi">Tiếng Việt</option>
@@ -41,6 +45,46 @@ export default async function SettingsPage() {
                 {t("settings.save")}
               </Button>
             </form>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("settings.theme")}</CardTitle>
+            <CardDescription>{t("settings.themeHint")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form action={setTheme} className="flex items-center gap-3">
+              <select
+                name="theme"
+                defaultValue={theme}
+                aria-label={t("settings.theme")}
+                className="border-input bg-background h-9 rounded-md border px-3 text-sm"
+              >
+                {THEMES.map((th) => (
+                  <option key={th} value={th}>
+                    {t(`settings.themes.${th}`)}
+                  </option>
+                ))}
+              </select>
+              <Button type="submit" size="sm">
+                {t("settings.save")}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("settings.backup")}</CardTitle>
+            <CardDescription>{t("settings.backupHint")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button asChild variant="outline">
+              {/* A plain link: the browser downloads the file. */}
+              <a href="/settings/export" download>
+                <Download />
+                {t("settings.exportAll")}
+              </a>
+            </Button>
           </CardContent>
         </Card>
         <Card>

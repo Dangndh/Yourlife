@@ -6,7 +6,7 @@ import { z } from "zod";
 
 import { createClient } from "@/lib/supabase/server";
 
-import { goalSchema, projectSchema, taskSchema } from "./schemas";
+import { goalSchema, projectSchema, taskSchema, type TaskInput } from "./schemas";
 
 export type FormState = {
   error?: string;
@@ -155,7 +155,7 @@ async function normalizeTask(
   supabase: Supabase,
   input: z.infer<typeof taskSchema>,
   previousCompletedAt: string | null,
-): Promise<{ row?: Record<string, unknown>; error?: FormState }> {
+): Promise<{ row?: TaskInput & { completed_at: string | null }; error?: FormState }> {
   if (input.project_id) {
     const { data: project } = await supabase
       .from("projects")
