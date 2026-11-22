@@ -57,9 +57,32 @@ insert into goals (title, life_area_id, metric_id, baseline_value, target_value)
   select 'Reach 68 kg', la.id, m.id, 72, 68 from life_areas la, metrics m where la.key = 'health' and m.name = 'Weight';
 select pg_temp.check((select progress from v_goal_progress where title = 'Reach 68 kg') = 0.375, 'metric goal progress');
 
+-- Reviews: one per period, Life Wheel scores 1–10, upsert per area
+insert into reviews (period_type, period_start, period_end) values ('weekly', '2026-11-16', '2026-11-22');
+do $$ begin
+  insert into reviews (period_type, period_start, period_end) values ('weekly', '2026-11-16', '2026-11-22');
+  raise exception 'FAILED: second review for the same week was accepted';
+exception when unique_violation then raise notice 'ok: one review per period';
+end $$;
+insert into review_area_scores (review_id, life_area_id, score)
+  select r.id, la.id, 6 from reviews r, life_areas la where la.key in ('health', 'learning');
+insert into review_area_scores (review_id, life_area_id, score)
+  select r.id, la.id, 8 from reviews r, life_areas la where la.key = 'health'
+  on conflict (review_id, life_area_id) do update set score = excluded.score;
+do $$ begin
+  insert into review_area_scores (review_id, life_area_id, score) select r.id, la.id, 11 from reviews r, life_areas la where la.key = 'family';
+  raise exception 'FAILED: score 11 was accepted';
+exception when check_violation then raise notice 'ok: scores are 1–10';
+end $$;
+select pg_temp.check((select last_score from v_life_area_summary where key = 'health') = 8, 'area summary shows the latest score');
+delete from reviews;
+select pg_temp.check((select count(*) from review_area_scores) = 0, 'deleting a review deletes its scores');
+insert into reviews (period_type, period_start, period_end) values ('weekly', '2026-11-16', '2026-11-22');
+
 -- Row level security: another user sees none of it
 set request.jwt.claim.sub = '22222222-2222-2222-2222-222222222222';
 select pg_temp.check((select count(*) from goals) = 0, 'other user sees no goals');
 select pg_temp.check((select count(*) from metric_entries) = 0, 'other user sees no metric entries');
 select pg_temp.check((select count(*) from journal_entries) = 0, 'other user sees no journal');
 select pg_temp.check((select count(*) from life_areas) = 7, 'other user sees only own areas');
+select pg_temp.check((select count(*) from reviews) = 0, 'other user sees no reviews');

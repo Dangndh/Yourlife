@@ -3,6 +3,7 @@ import {
   BarChart3,
   CalendarDays,
   CheckSquare,
+  ClipboardCheck,
   LayoutDashboard,
   LineChart,
   NotebookPen,
@@ -24,6 +25,7 @@ export const coreNav: NavItem[] = [
 
 export const reflectNav: NavItem[] = [
   { href: "/journal", labelKey: "journal", icon: NotebookPen },
+  { href: "/reviews", labelKey: "reviews", icon: ClipboardCheck },
   { href: "/calendar", labelKey: "calendar", icon: CalendarDays },
   { href: "/reports", labelKey: "reports", icon: BarChart3 },
   { href: "/settings", labelKey: "settings", icon: Settings },

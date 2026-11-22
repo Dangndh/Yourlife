@@ -16,7 +16,8 @@
     "areas": "Lĩnh vực",
     "signOut": "Đăng xuất",
     "quickLog": "Ghi nhanh",
-    "metrics": "Chỉ số"
+    "metrics": "Chỉ số",
+    "reviews": "Tổng kết"
   },
   "areas": {
     "finance": "Tài chính",
@@ -71,7 +72,14 @@
     "logs7d": "{count, plural, =0 {Chưa có hoạt động tuần này} other {# hoạt động tuần này}}",
     "score": "Điểm {value}/10",
     "noScore": "Chưa chấm điểm",
-    "empty": "Các lĩnh vực sẽ xuất hiện sau lần đăng nhập đầu tiên."
+    "empty": "Các lĩnh vực sẽ xuất hiện sau lần đăng nhập đầu tiên.",
+    "today": "Hôm nay",
+    "todayCount": "{count, plural, =0 {Hôm nay không có việc đến hạn} other {# việc cho hôm nay}}",
+    "overdueCount": "{count, plural, other {# việc quá hạn}}",
+    "nothingToday": "Hôm nay không có việc đến hạn. Lên kế hoạch trong Công việc, hoặc tận hưởng thời gian rảnh.",
+    "noWheel": "Chấm điểm các lĩnh vực trong lần tổng kết đầu tiên.",
+    "firstReview": "Làm tổng kết tuần đầu tiên",
+    "reviewNudge": "Đến lúc tổng kết tuần"
   },
   "module": {
     "subpages": "Mục",
@@ -395,5 +403,70 @@
     "weight": "Cân nặng",
     "sleep": "Giấc ngủ",
     "life_satisfaction": "Mức hài lòng cuộc sống"
+  },
+  "reviews": {
+    "subtitle": "Nhìn lại, chấm điểm từng lĩnh vực và chọn trọng tâm cho kỳ tới",
+    "weekly": {
+      "title": "Tổng kết tuần",
+      "short": "Tuần",
+      "hint": "10–15 phút vào cuối mỗi tuần.",
+      "current": "Tuần này",
+      "previous": "Tuần trước"
+    },
+    "monthly": {
+      "title": "Tổng kết tháng",
+      "short": "Tháng",
+      "hint": "Nhìn lại kỹ hơn vào cuối mỗi tháng.",
+      "current": "Tháng này",
+      "previous": "Tháng trước"
+    },
+    "history": "Tất cả bản tổng kết",
+    "empty": "Chưa có bản tổng kết nào. Hãy bắt đầu với tuần này.",
+    "status": {
+      "draft": "Bản nháp",
+      "completed": "Đã hoàn thành"
+    },
+    "summaryTitle": "Kỳ này qua các con số",
+    "stats": {
+      "tasksDone": "Việc đã xong",
+      "goalsAchieved": "Mục tiêu đạt được",
+      "timeLogged": "Thời gian đã ghi",
+      "journalDays": "Số ngày viết nhật ký",
+      "avgMood": "Tâm trạng trung bình",
+      "avgEnergy": "Năng lượng trung bình",
+      "byArea": "Thời gian theo lĩnh vực"
+    },
+    "wheelTitle": "Bánh xe cuộc sống",
+    "wheelHint": "Bạn hài lòng thế nào với từng lĩnh vực lúc này? 1 = rất không hài lòng, 10 = không thể tốt hơn.",
+    "wheelLegend": "Liền: hiện tại · gạch: lần tổng kết trước",
+    "rated": "Đã chấm {count}/{total}",
+    "previousScore": "lần trước {value}",
+    "notePlaceholder": "Vì sao điểm này? (tuỳ chọn)",
+    "noteFor": "Ghi chú cho {area}",
+    "questionsTitle": "Suy ngẫm",
+    "questions": {
+      "wins": "Điều gì đã tốt?",
+      "challenges": "Điều gì khó khăn?",
+      "lessons": "Bạn học được gì?",
+      "next_focus": "Kỳ tới bạn sẽ tập trung vào gì?"
+    },
+    "placeholders": {
+      "wins": "Thành công, lớn hay nhỏ",
+      "challenges": "Trở ngại, điều làm bạn mệt",
+      "lessons": "Điều bạn sẽ làm khác đi",
+      "next_focus": "1–3 ưu tiên cho kỳ tới"
+    },
+    "overall": "Nhìn chung, kỳ này thế nào? (1–10)",
+    "complete": "Hoàn thành tổng kết",
+    "saveDraft": "Lưu nháp",
+    "save": "Lưu",
+    "saving": "Đang lưu…",
+    "unsaved": "Có thay đổi chưa lưu",
+    "savedAt": "Đã lưu lúc {time}",
+    "completedBadge": "Đã hoàn thành",
+    "delete": "Xoá bản tổng kết",
+    "startButton": "Bắt đầu",
+    "continueButton": "Làm tiếp",
+    "doneButton": "Đã xong · xem"
   }
 }

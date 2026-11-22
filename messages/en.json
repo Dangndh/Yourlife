@@ -16,7 +16,8 @@
     "areas": "Life areas",
     "signOut": "Sign out",
     "quickLog": "Quick Log",
-    "metrics": "Metrics"
+    "metrics": "Metrics",
+    "reviews": "Reviews"
   },
   "areas": {
     "finance": "Finance",
@@ -71,7 +72,14 @@
     "logs7d": "{count, plural, =0 {No activity this week} one {# log this week} other {# logs this week}}",
     "score": "Score {value}/10",
     "noScore": "Not scored yet",
-    "empty": "Your life areas will appear here after your first sign-in."
+    "empty": "Your life areas will appear here after your first sign-in.",
+    "today": "Today",
+    "todayCount": "{count, plural, =0 {Nothing due today} one {# task for today} other {# tasks for today}}",
+    "overdueCount": "{count, plural, one {# overdue task} other {# overdue tasks}}",
+    "nothingToday": "Nothing due today. Plan something in Tasks, or enjoy the free time.",
+    "noWheel": "Rate your life areas in your first review.",
+    "firstReview": "Do your first weekly review",
+    "reviewNudge": "Time for your weekly review"
   },
   "module": {
     "subpages": "Sections",
@@ -395,5 +403,70 @@
     "weight": "Weight",
     "sleep": "Sleep",
     "life_satisfaction": "Life satisfaction"
+  },
+  "reviews": {
+    "subtitle": "Look back, rate each life area, and choose what to focus on next",
+    "weekly": {
+      "title": "Weekly review",
+      "short": "Week",
+      "hint": "10–15 minutes at the end of each week.",
+      "current": "This week",
+      "previous": "Last week"
+    },
+    "monthly": {
+      "title": "Monthly review",
+      "short": "Month",
+      "hint": "A bigger look back at the end of each month.",
+      "current": "This month",
+      "previous": "Last month"
+    },
+    "history": "All reviews",
+    "empty": "No reviews yet. Start with this week.",
+    "status": {
+      "draft": "Draft",
+      "completed": "Completed"
+    },
+    "summaryTitle": "This period in numbers",
+    "stats": {
+      "tasksDone": "Tasks done",
+      "goalsAchieved": "Goals achieved",
+      "timeLogged": "Time logged",
+      "journalDays": "Journal days",
+      "avgMood": "Average mood",
+      "avgEnergy": "Average energy",
+      "byArea": "Time per life area"
+    },
+    "wheelTitle": "Life Wheel",
+    "wheelHint": "How satisfied are you with each area right now? 1 = very unhappy, 10 = couldn't be better.",
+    "wheelLegend": "Solid: now · dashed: previous review",
+    "rated": "{count}/{total} rated",
+    "previousScore": "last time {value}",
+    "notePlaceholder": "Why this score? (optional)",
+    "noteFor": "Note for {area}",
+    "questionsTitle": "Reflect",
+    "questions": {
+      "wins": "What went well?",
+      "challenges": "What was hard?",
+      "lessons": "What did you learn?",
+      "next_focus": "What will you focus on next?"
+    },
+    "placeholders": {
+      "wins": "Wins, big or small",
+      "challenges": "Obstacles, what drained you",
+      "lessons": "What you would do differently",
+      "next_focus": "1–3 priorities for the next period"
+    },
+    "overall": "Overall, how was this period? (1–10)",
+    "complete": "Complete review",
+    "saveDraft": "Save draft",
+    "save": "Save",
+    "saving": "Saving…",
+    "unsaved": "Unsaved changes",
+    "savedAt": "Saved at {time}",
+    "completedBadge": "Completed",
+    "delete": "Delete review",
+    "startButton": "Start",
+    "continueButton": "Continue",
+    "doneButton": "Done · view"
   }
 }
