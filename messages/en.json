@@ -29,6 +29,7 @@
     "growth": "Personal Growth"
   },
   "pages": {
+    "vocab": "Vocabulary",
     "overview": "Overview",
     "transactions": "Transactions",
     "accounts": "Accounts",
@@ -239,7 +240,9 @@
       "saveFailed": "Could not save. Please try again.",
       "inFuture": "Can't be in the future.",
       "targetRequired": "A target value is needed when a metric is chosen.",
-      "duplicate": "A skill with this name already exists."
+      "duplicate": "A skill with this name already exists.",
+      "duplicateTerm": "This word is already in the deck. Press \"Add anyway\" to add it again.",
+      "emptyList": "No lines with a word and a meaning were found."
     },
     "metricProgress": "Now {current} · target {target} · from {baseline}",
     "progressFromMetric": "Progress is measured by the metric."
@@ -560,6 +563,123 @@
       "evidence": "Based on",
       "evidencePlaceholder": "e.g. IELTS mock 6.5",
       "titlePlaceholder": "e.g. IELTS Writing Masterclass"
+    }
+  },
+  "vocab": {
+    "subtitle": "Learn words with spaced repetition: each word comes back right before you'd forget it",
+    "today": "Vocabulary today",
+    "reviewsToday": "cards reviewed today",
+    "streakDays": "day streak",
+    "last30": "Reviews in the last 30 days",
+    "reviewAll": "Review {count}",
+    "allDone": "All done for today",
+    "noDecks": "No word decks yet. Create your first deck →",
+    "intro": "Create a deck for the language you're learning, add words (or paste a whole list), then review a few minutes every day.",
+    "newDeck": "New deck",
+    "createDeck": "Create deck",
+    "editDeck": "Edit deck",
+    "deleteDeck": "Delete deck",
+    "allDecks": "All decks",
+    "cardCount": "{count, plural, one {# word} other {# words}}",
+    "study": "Study",
+    "studyCount": "Study {count}",
+    "todayCounts": "Today: {due} to review · {fresh} new",
+    "dailyGoal": "Daily goal (cards)",
+    "howTitle": "How it works",
+    "how1": "New words start as flashcards. After that you practise them by choosing the meaning, typing the word, and writing what you hear.",
+    "how2": "Answer honestly. Words you find hard come back sooner; words you know well come back days or months later.",
+    "addCard": "Add word",
+    "addAnyway": "Add anyway",
+    "cardAdded": "Added",
+    "moreFields": "Pronunciation, example, notes",
+    "editCard": "Edit word",
+    "deleteCard": "Delete word",
+    "resetCard": "Start this word over",
+    "repsLapses": "Reviewed {reps}× · forgot {lapses}×",
+    "words": "Words",
+    "noCards": "No words yet. Add one above or paste a list.",
+    "progress": "Progress",
+    "importTitle": "Paste a list",
+    "importLabel": "One word per line",
+    "importHint": "word | meaning | pronunciation | example | example meaning. Only the first two are needed. Tab, |, = or - also work as separators.",
+    "import": "Import",
+    "imported": "Added {imported}, skipped {skipped} (already in the deck or incomplete).",
+    "listen": "Listen",
+    "listenAgain": "Listen again",
+    "sound": "Sound on/off",
+    "stop": "Stop",
+    "newWord": "New word",
+    "showAnswer": "Show meaning",
+    "continue": "Continue",
+    "check": "Check",
+    "dontKnow": "I don't know",
+    "iWasRight": "I was right",
+    "typeTheWord": "Type the word",
+    "typeWhatYouHear": "Type what you hear",
+    "doneTitle": "Session complete!",
+    "nothingDue": "Nothing to review right now",
+    "doneSummary": "{count} cards · {pct}% correct · {minutes} min",
+    "saveErrors": "{count, plural, one {# answer} other {# answers}} could not be saved. Check your connection.",
+    "backToDecks": "Back",
+    "modeLabel": "Exercise",
+    "dueNow": "due now",
+    "dueToday": "later today",
+    "dueIn": "in {n} d",
+    "rating": {
+      "1": "Again",
+      "2": "Hard",
+      "3": "Good",
+      "4": "Easy"
+    },
+    "in": {
+      "min": "{n} min",
+      "day": "{n} d",
+      "month": "{n} mo",
+      "year": "{n} y"
+    },
+    "mode": {
+      "mix": "Mixed",
+      "flip": "Flashcards",
+      "choice": "Multiple choice",
+      "type": "Type the word",
+      "listen": "Listen & write"
+    },
+    "modeHint": {
+      "flip": "Do you remember the meaning?",
+      "choice": "Choose the meaning",
+      "type": "Write the word for",
+      "listen": "Write what you hear"
+    },
+    "grade": {
+      "correct": "Correct!",
+      "almost": "Almost: check the spelling",
+      "wrong": "Not quite. The answer is above."
+    },
+    "keys": {
+      "flip": "Space: show · 1–4: rate",
+      "choice": "1–4: choose · Enter: continue",
+      "type": "Enter: check, then continue",
+      "listen": "Enter: check, then continue"
+    },
+    "state": {
+      "new": "New",
+      "learning": "Learning",
+      "young": "Reviewing",
+      "known": "Known"
+    },
+    "fields": {
+      "deckName": "Deck name",
+      "deckNamePlaceholder": "e.g. English: IELTS words",
+      "language": "Language",
+      "languageHint": "Used to read words aloud.",
+      "newPerDay": "New words per day",
+      "newPerDayHint": "10 is a good start. Reviews are not limited.",
+      "skillHint": "Study time counts toward this skill.",
+      "term": "Word or phrase",
+      "meaning": "Meaning",
+      "pronunciation": "Pronunciation",
+      "example": "Example sentence",
+      "exampleMeaning": "Example meaning"
     }
   }
 }
