@@ -14,7 +14,8 @@
     "settings": "Cài đặt",
     "more": "Thêm",
     "areas": "Lĩnh vực",
-    "signOut": "Đăng xuất"
+    "signOut": "Đăng xuất",
+    "quickLog": "Ghi nhanh"
   },
   "areas": {
     "finance": "Tài chính",
@@ -205,7 +206,72 @@
     "errors": {
       "invalid": "Vui lòng kiểm tra lại ô này.",
       "targetBeforeStart": "Phải bằng hoặc sau ngày bắt đầu.",
-      "saveFailed": "Không lưu được. Vui lòng thử lại."
+      "saveFailed": "Không lưu được. Vui lòng thử lại.",
+      "inFuture": "Không được ở tương lai."
     }
+  },
+  "log": {
+    "title": "Nhật ký hoạt động",
+    "subtitle": "Mọi việc bạn đã làm, trên mọi lĩnh vực",
+    "quickLog": "Ghi nhanh",
+    "quickLogHint": "Viết một dòng về việc bạn vừa làm.",
+    "what": "Bạn đã làm gì?",
+    "whatPlaceholder": "VD: Đọc 20 trang, chạy 5 km, gọi cho mẹ",
+    "duration": "Bao lâu",
+    "minutes": "{count} phút",
+    "minutesShort": "phút",
+    "hours": "{h} giờ",
+    "hoursMinutes": "{h} giờ {m} phút",
+    "when": "Lúc nào",
+    "whenHint": "Để trống nếu là bây giờ.",
+    "more": "Thêm thời điểm hoặc ghi chú",
+    "save": "Ghi lại",
+    "edit": "Sửa ghi chép",
+    "delete": "Xóa ghi chép",
+    "yesterday": "Hôm qua",
+    "range": "Khoảng thời gian",
+    "lastDays": "{count} ngày",
+    "allAreas": "Mọi lĩnh vực",
+    "allTypes": "Mọi loại",
+    "type": "Loại",
+    "filter": "Lọc",
+    "empty": "Chưa có ghi chép nào trong khoảng này. Bấm phím L hoặc nút + để ghi lại việc bạn đã làm.",
+    "count": "{count} mục",
+    "byArea": "Theo lĩnh vực",
+    "recent": "Hoạt động gần đây",
+    "seeAll": "Xem tất cả",
+    "emptyArea": "Chưa có hoạt động nào ở đây.",
+    "source": {
+      "manual": "Ghi nhanh",
+      "tasks": "Xong việc",
+      "lrn_study_sessions": "Học",
+      "hlt_workouts": "Tập luyện",
+      "hlt_medical_records": "Hồ sơ sức khoẻ",
+      "rel_interactions": "Gặp gỡ",
+      "car_achievements": "Thành tích",
+      "grw_experiences": "Trải nghiệm"
+    }
+  },
+  "journal": {
+    "today": "Nhật ký hôm nay",
+    "prevDay": "Ngày trước",
+    "nextDay": "Ngày sau",
+    "recent": "Các ngày gần đây",
+    "noEntries": "Chưa có trang nào.",
+    "mood": "Tâm trạng",
+    "energy": "Năng lượng",
+    "moodLabels": "Rất tệ|Tệ|Bình thường|Tốt|Rất tốt",
+    "energyLabels": "Kiệt sức|Mệt|Bình thường|Khoẻ|Tràn đầy",
+    "body": "Hôm nay của bạn thế nào?",
+    "placeholder": "Chuyện gì đã xảy ra, điều bạn biết ơn, điều bạn học được…",
+    "markdownHint": "Có thể dùng Markdown. Bấm Ctrl/⌘ + S để lưu.",
+    "private": "Riêng tư",
+    "privateHint": "Ẩn khỏi trang chủ và phần review",
+    "save": "Lưu",
+    "saving": "Đang lưu…",
+    "unsaved": "Chưa lưu",
+    "savedAt": "Đã lưu lúc {time}",
+    "moodShort": "Tâm trạng {value}",
+    "energyShort": "Năng lượng {value}"
   }
 }

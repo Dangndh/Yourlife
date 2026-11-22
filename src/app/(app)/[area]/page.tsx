@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTranslations } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { Plus } from "lucide-react";
 
 import { PageHeader } from "@/components/page-header";
@@ -9,7 +9,9 @@ import { TaskItem } from "@/components/planning/task-item";
 import { TaskQuickAdd } from "@/components/planning/task-quick-add";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { getAreas, getGoalProgressList, getProjects, getTasks, getToday } from "@/core/planning/queries";
+import { LogItem, formatTime } from "@/components/activity/log-item";
+import { getRecentLogs } from "@/core/activity/queries";
+import { getAreas, getGoalProgressList, getProjects, getTasks, getTimeZone, getToday } from "@/core/planning/queries";
 import { getModule } from "@/modules";
 
 type Props = { params: Promise<{ area: string }> };
@@ -30,14 +32,15 @@ export default async function AreaPage({ params }: Props) {
   const areas = await getAreas();
   const lifeArea = areas.find((a) => a.key === area);
 
-  const [goals, projects, tasks, today] = lifeArea
-    ? await Promise.all([
-        getGoalProgressList({ lifeAreaId: lifeArea.id, status: ["active", "planned", "paused"] }),
-        getProjects({ lifeAreaId: lifeArea.id, openOnly: true }),
-        getTasks({ lifeAreaId: lifeArea.id, open: true }),
-        getToday(),
-      ])
-    : [[], [], [], await getToday()];
+  const [goals, projects, tasks, logs, today, timeZone, locale] = await Promise.all([
+    lifeArea ? getGoalProgressList({ lifeAreaId: lifeArea.id, status: ["active", "planned", "paused"] }) : [],
+    lifeArea ? getProjects({ lifeAreaId: lifeArea.id, openOnly: true }) : [],
+    lifeArea ? getTasks({ lifeAreaId: lifeArea.id, open: true }) : [],
+    lifeArea ? getRecentLogs(lifeArea.id, 8) : [],
+    getToday(),
+    getTimeZone(),
+    getLocale(),
+  ]);
   const next = `/${area}`;
   const parentTitle = (task: (typeof tasks)[number]) =>
     (task.project_id && projects.find((p) => p.id === task.project_id)?.title) ||
@@ -96,6 +99,36 @@ export default async function AreaPage({ params }: Props) {
         </div>
 
         <div className="flex flex-col gap-4">
+          <Card>
+            <CardHeader className="flex-row items-center justify-between">
+              <CardTitle>{t("log.recent")}</CardTitle>
+              <Link href={`/log?area=${area}`} className="text-muted-foreground hover:text-foreground text-xs">
+                {t("log.seeAll")}
+              </Link>
+            </CardHeader>
+            <CardContent>
+              {logs.length === 0 ? (
+                <p className="text-muted-foreground text-sm">{t("log.emptyArea")}</p>
+              ) : (
+                <ul className="divide-y">
+                  {logs.map((log) => (
+                    <LogItem
+                      key={log.id}
+                      log={log}
+                      time={
+                        new Intl.DateTimeFormat("en-CA", { timeZone }).format(new Date(log.occurred_at)) === today
+                          ? formatTime(log.occurred_at, locale, timeZone)
+                          : new Intl.DateTimeFormat(locale, { timeZone, day: "numeric", month: "short" }).format(
+                              new Date(log.occurred_at),
+                            )
+                      }
+                    />
+                  ))}
+                </ul>
+              )}
+            </CardContent>
+          </Card>
+
           <Card>
             <CardHeader className="flex-row items-center justify-between">
               <CardTitle>{t("planning.projects")}</CardTitle>

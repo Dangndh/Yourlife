@@ -4,6 +4,8 @@ import { getTranslations } from "next-intl/server";
 import { coreNav, reflectNav } from "@/core/navigation";
 import { modules } from "@/modules";
 
+import { QuickLogButton } from "@/components/quick-log/quick-log";
+
 import { NavLink } from "./nav-link";
 
 /** Desktop sidebar (md and up). On phones the bottom nav takes over. */
@@ -15,6 +17,10 @@ export async function Sidebar({ email }: { email?: string }) {
       <div className="px-5 py-5">
         <div className="text-lg font-semibold">{t("app.name")}</div>
         <div className="text-muted-foreground text-xs">{t("app.tagline")}</div>
+      </div>
+
+      <div className="px-3 pb-4">
+        <QuickLogButton label={t("log.quickLog")} shortcut="L" />
       </div>
 
       <nav className="flex flex-1 flex-col gap-6 overflow-y-auto px-3 pb-4">
