@@ -14,7 +14,8 @@
     "settings": "Settings",
     "more": "More",
     "areas": "Life areas",
-    "signOut": "Sign out"
+    "signOut": "Sign out",
+    "quickLog": "Quick Log"
   },
   "areas": {
     "finance": "Finance",
@@ -205,7 +206,72 @@
     "errors": {
       "invalid": "Please check this field.",
       "targetBeforeStart": "Must be on or after the start date.",
-      "saveFailed": "Could not save. Please try again."
+      "saveFailed": "Could not save. Please try again.",
+      "inFuture": "Can't be in the future."
     }
+  },
+  "log": {
+    "title": "Activity log",
+    "subtitle": "Everything you did, across all life areas",
+    "quickLog": "Quick Log",
+    "quickLogHint": "Write one line about what you just did.",
+    "what": "What did you do?",
+    "whatPlaceholder": "e.g. Read 20 pages, ran 5 km, called Mom",
+    "duration": "How long",
+    "minutes": "{count} min",
+    "minutesShort": "min",
+    "hours": "{h} h",
+    "hoursMinutes": "{h} h {m} min",
+    "when": "When",
+    "whenHint": "Leave empty for now.",
+    "more": "Add time or a note",
+    "save": "Log it",
+    "edit": "Edit log",
+    "delete": "Delete log",
+    "yesterday": "Yesterday",
+    "range": "Range",
+    "lastDays": "{count} days",
+    "allAreas": "All areas",
+    "allTypes": "All types",
+    "type": "Type",
+    "filter": "Filter",
+    "empty": "Nothing logged in this period. Press L or the + button to log what you did.",
+    "count": "{count, plural, one {# entry} other {# entries}}",
+    "byArea": "By area",
+    "recent": "Recent activity",
+    "seeAll": "See all",
+    "emptyArea": "Nothing logged here yet.",
+    "source": {
+      "manual": "Quick Log",
+      "tasks": "Task done",
+      "lrn_study_sessions": "Study",
+      "hlt_workouts": "Workout",
+      "hlt_medical_records": "Health record",
+      "rel_interactions": "Meet-up",
+      "car_achievements": "Achievement",
+      "grw_experiences": "Experience"
+    }
+  },
+  "journal": {
+    "today": "Today's journal",
+    "prevDay": "Previous day",
+    "nextDay": "Next day",
+    "recent": "Recent entries",
+    "noEntries": "No entries yet.",
+    "mood": "Mood",
+    "energy": "Energy",
+    "moodLabels": "Very bad|Bad|Okay|Good|Great",
+    "energyLabels": "Exhausted|Tired|Normal|Energetic|Full of energy",
+    "body": "How was your day?",
+    "placeholder": "What happened, what you are grateful for, what you learned…",
+    "markdownHint": "Markdown is fine. Press Ctrl/⌘ + S to save.",
+    "private": "Private",
+    "privateHint": "Hidden from the dashboard and reviews",
+    "save": "Save",
+    "saving": "Saving…",
+    "unsaved": "Unsaved changes",
+    "savedAt": "Saved at {time}",
+    "moodShort": "Mood {value}",
+    "energyShort": "Energy {value}"
   }
 }

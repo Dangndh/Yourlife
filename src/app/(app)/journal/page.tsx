@@ -1,13 +1,8 @@
-import { getTranslations } from "next-intl/server";
+import { redirect } from "next/navigation";
 
-import { ComingSoon } from "@/components/coming-soon";
+import { getToday } from "@/core/planning/queries";
 
-export async function generateMetadata() {
-  const t = await getTranslations("nav");
-  return { title: t("journal") };
-}
-
-export default async function Page() {
-  const t = await getTranslations("nav");
-  return <ComingSoon title={t("journal")} />;
+// /journal always opens today's page.
+export default async function JournalIndex() {
+  redirect(`/journal/${await getToday()}`);
 }
