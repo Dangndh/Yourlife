@@ -15,7 +15,8 @@
     "more": "Thêm",
     "areas": "Lĩnh vực",
     "signOut": "Đăng xuất",
-    "quickLog": "Ghi nhanh"
+    "quickLog": "Ghi nhanh",
+    "metrics": "Chỉ số"
   },
   "areas": {
     "finance": "Tài chính",
@@ -147,7 +148,14 @@
       "none": "Không có",
       "projectGoalHint": "Dự án thuộc mục tiêu sẽ được tính vào tiến độ của mục tiêu đó.",
       "goalFromProject": "Lấy theo dự án.",
-      "areaFromParent": "Theo mục tiêu hoặc dự án đã chọn."
+      "areaFromParent": "Theo mục tiêu hoặc dự án đã chọn.",
+      "measure": "Đo bằng chỉ số (tuỳ chọn)",
+      "metric": "Chỉ số",
+      "metricHint": "Tiến độ sẽ tính theo chỉ số thay vì công việc.",
+      "noMetric": "Không, dùng công việc",
+      "baseline": "Giá trị ban đầu",
+      "baselineHint": "Mức hiện tại. Để trống là 0.",
+      "targetValue": "Giá trị đích"
     },
     "goalType": {
       "outcome": "Kết quả",
@@ -207,8 +215,11 @@
       "invalid": "Vui lòng kiểm tra lại ô này.",
       "targetBeforeStart": "Phải bằng hoặc sau ngày bắt đầu.",
       "saveFailed": "Không lưu được. Vui lòng thử lại.",
-      "inFuture": "Không được ở tương lai."
-    }
+      "inFuture": "Không được ở tương lai.",
+      "targetRequired": "Cần giá trị đích khi đã chọn chỉ số."
+    },
+    "metricProgress": "Hiện tại {current} · đích {target} · từ {baseline}",
+    "progressFromMetric": "Tiến độ được đo bằng chỉ số."
   },
   "log": {
     "title": "Nhật ký hoạt động",
@@ -224,7 +235,7 @@
     "hoursMinutes": "{h} giờ {m} phút",
     "when": "Lúc nào",
     "whenHint": "Để trống nếu là bây giờ.",
-    "more": "Thêm thời điểm hoặc ghi chú",
+    "more": "Thêm giờ, ghi chú hoặc chỉ số",
     "save": "Ghi lại",
     "edit": "Sửa ghi chép",
     "delete": "Xóa ghi chép",
@@ -273,5 +284,102 @@
     "savedAt": "Đã lưu lúc {time}",
     "moodShort": "Tâm trạng {value}",
     "energyShort": "Năng lượng {value}"
+  },
+  "metrics": {
+    "subtitle": "Những con số cho thấy từng lĩnh vực đang ra sao",
+    "new": "Chỉ số mới",
+    "newHint": "Theo dõi một con số bạn tự nhập, như cân nặng, giấc ngủ hay số bước.",
+    "edit": "Sửa chỉ số",
+    "active": "Đang dùng",
+    "archived": "Đã lưu trữ",
+    "archivedBadge": "Đã lưu trữ",
+    "archive": "Lưu trữ",
+    "unarchive": "Khôi phục",
+    "empty": "Chưa có chỉ số nào.",
+    "noArchived": "Không có chỉ số lưu trữ.",
+    "emptyArea": "Lĩnh vực này chưa có chỉ số.",
+    "otherArea": "Không thuộc lĩnh vực",
+    "noData": "Chưa có giá trị",
+    "noDataYet": "Chưa có giá trị trong khoảng này. Thêm ở bên dưới.",
+    "noDataDerived": "Tự điền khi bạn dùng mô-đun của lĩnh vực này.",
+    "chart": "Biểu đồ",
+    "range": {
+      "30": "30 ngày",
+      "90": "90 ngày",
+      "365": "1 năm",
+      "all": "Tất cả"
+    },
+    "addEntry": "Thêm giá trị",
+    "value": "Giá trị",
+    "date": "Ngày",
+    "entries": "Các giá trị",
+    "noEntries": "Chưa có giá trị.",
+    "deleteEntry": "Xoá giá trị",
+    "recordValue": "Ghi một chỉ số",
+    "goals": "Mục tiêu dùng chỉ số này",
+    "noGoals": "Chưa có mục tiêu nào dùng chỉ số này.",
+    "goalsHint": "Gắn mục tiêu vào chỉ số ở trang sửa mục tiêu; giá trị đích hiện trên biểu đồ bằng đường gạch.",
+    "target": "Đích",
+    "derivedHint": "Chỉ số này được tính từ dữ liệu mô-đun, nên chỉ đổi được tên và lĩnh vực.",
+    "source": {
+      "manual": "Bạn tự nhập",
+      "derived": "Tự động"
+    },
+    "fields": {
+      "name": "Tên",
+      "namePlaceholder": "VD: Số bước, Nhịp tim nghỉ",
+      "noArea": "Không thuộc lĩnh vực",
+      "unit": "Đơn vị",
+      "unitHint": "VD: kg, h, %, /10, hoặc mã tiền tệ như USD",
+      "valueType": "Loại",
+      "direction": "Tốt hơn khi",
+      "period": "Gộp theo",
+      "periodHint": "Gộp các giá trị thành một điểm mỗi ngày, tuần hoặc tháng.",
+      "aggregation": "Cách gộp",
+      "aggregationHint": "Cách các giá trị trong cùng kỳ thành một điểm."
+    },
+    "valueType": {
+      "number": "Số",
+      "duration": "Thời lượng",
+      "currency": "Tiền",
+      "percent": "Phần trăm",
+      "rating": "Thang điểm"
+    },
+    "direction": {
+      "up": "Cao hơn",
+      "down": "Thấp hơn",
+      "neutral": "Không rõ"
+    },
+    "period": {
+      "entry": "Từng giá trị",
+      "day": "Ngày",
+      "week": "Tuần",
+      "month": "Tháng"
+    },
+    "aggregation": {
+      "last": "Mới nhất",
+      "avg": "Trung bình",
+      "sum": "Tổng",
+      "min": "Thấp nhất",
+      "max": "Cao nhất"
+    }
+  },
+  "metricNames": {
+    "monthly_income": "Thu nhập tháng",
+    "monthly_expense": "Chi tiêu tháng",
+    "savings_rate": "Tỷ lệ tiết kiệm",
+    "quarterly_achievements": "Thành tích mỗi quý",
+    "achievements": "Thành tích",
+    "weekly_study_hours": "Giờ học mỗi tuần",
+    "study_hours": "Giờ học",
+    "weekly_workouts": "Buổi tập mỗi tuần",
+    "workouts": "Buổi tập",
+    "monthly_interactions": "Lần liên lạc mỗi tháng",
+    "interactions": "Lần liên lạc",
+    "family_time": "Thời gian gia đình",
+    "weekly_family_hours": "Giờ cho gia đình mỗi tuần",
+    "weight": "Cân nặng",
+    "sleep": "Giấc ngủ",
+    "life_satisfaction": "Mức hài lòng cuộc sống"
   }
 }

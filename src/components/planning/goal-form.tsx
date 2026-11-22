@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useState } from "react";
 import { useTranslations } from "next-intl";
 
 import { Button } from "@/components/ui/button";
@@ -18,15 +18,19 @@ type Props = {
   goal?: Goal;
   areas: AreaOption[];
   parentOptions: { id: string; title: string }[];
+  /** Metrics a goal can be measured by (label already translated, with unit). */
+  metricOptions?: { id: string; label: string }[];
   defaultAreaId?: string;
   cancelHref: string;
 };
 
-export function GoalForm({ goal, areas, parentOptions, defaultAreaId, cancelHref }: Props) {
+export function GoalForm({ goal, areas, parentOptions, metricOptions = [], defaultAreaId, cancelHref }: Props) {
   const t = useTranslations();
   const [state, action, pending] = useActionState<FormState, FormData>(saveGoal, {});
   const e = state.fieldErrors ?? {};
-  const v = (name: string, fallback: string | null | undefined) => state.values?.[name] ?? fallback ?? "";
+  const v = (name: string, fallback: string | number | null | undefined) =>
+    state.values?.[name] ?? (fallback == null ? "" : String(fallback));
+  const [metricId, setMetricId] = useState(v("metric_id", goal?.metric_id));
 
   return (
     <form key={state.attempt ?? 0} action={action} className="grid max-w-2xl gap-5 sm:grid-cols-2">
@@ -88,6 +92,37 @@ export function GoalForm({ goal, areas, parentOptions, defaultAreaId, cancelHref
       <Field id="description" label={t("planning.fields.description")} error={e.description} className="sm:col-span-2">
         <Textarea id="description" name="description" rows={3} defaultValue={v("description", goal?.description ?? "")} />
       </Field>
+      {metricOptions.length > 0 && (
+        <fieldset className="grid gap-5 rounded-lg border p-4 sm:col-span-2 sm:grid-cols-3">
+          <legend className="px-1 text-sm font-medium">{t("planning.fields.measure")}</legend>
+          <Field
+            id="metric_id"
+            label={t("planning.fields.metric")}
+            hint={t("planning.fields.metricHint")}
+            error={e.metric_id}
+            className="sm:col-span-3"
+          >
+            <NativeSelect id="metric_id" name="metric_id" value={metricId} onChange={(ev) => setMetricId(ev.target.value)}>
+              <option value="">{t("planning.fields.noMetric")}</option>
+              {metricOptions.map((m) => (
+                <option key={m.id} value={m.id}>
+                  {m.label}
+                </option>
+              ))}
+            </NativeSelect>
+          </Field>
+          {metricId && (
+            <>
+              <Field id="baseline_value" label={t("planning.fields.baseline")} hint={t("planning.fields.baselineHint")} error={e.baseline_value}>
+                <Input id="baseline_value" name="baseline_value" type="number" step="any" inputMode="decimal" defaultValue={v("baseline_value", goal?.baseline_value)} />
+              </Field>
+              <Field id="target_value" label={t("planning.fields.targetValue")} error={e.target_value}>
+                <Input id="target_value" name="target_value" type="number" step="any" inputMode="decimal" required defaultValue={v("target_value", goal?.target_value)} />
+              </Field>
+            </>
+          )}
+        </fieldset>
+      )}
       {parentOptions.length > 0 && (
         <Field
           id="parent_goal_id"

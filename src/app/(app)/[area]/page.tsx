@@ -11,6 +11,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { LogItem, formatTime } from "@/components/activity/log-item";
 import { getRecentLogs } from "@/core/activity/queries";
+import { MetricCard } from "@/components/metrics/metric-card";
+import { getMetrics, getSeries } from "@/core/metrics/queries";
+import { addDays } from "@/core/planning/dates";
 import { getAreas, getGoalProgressList, getProjects, getTasks, getTimeZone, getToday } from "@/core/planning/queries";
 import { getModule } from "@/modules";
 
@@ -32,7 +35,7 @@ export default async function AreaPage({ params }: Props) {
   const areas = await getAreas();
   const lifeArea = areas.find((a) => a.key === area);
 
-  const [goals, projects, tasks, logs, today, timeZone, locale] = await Promise.all([
+  const [goals, projects, tasks, logs, today, timeZone, locale, metrics] = await Promise.all([
     lifeArea ? getGoalProgressList({ lifeAreaId: lifeArea.id, status: ["active", "planned", "paused"] }) : [],
     lifeArea ? getProjects({ lifeAreaId: lifeArea.id, openOnly: true }) : [],
     lifeArea ? getTasks({ lifeAreaId: lifeArea.id, open: true }) : [],
@@ -40,7 +43,9 @@ export default async function AreaPage({ params }: Props) {
     getToday(),
     getTimeZone(),
     getLocale(),
+    lifeArea ? getMetrics({ lifeAreaId: lifeArea.id }) : [],
   ]);
+  const series = await getSeries(metrics, addDays(today, -400));
   const next = `/${area}`;
   const parentTitle = (task: (typeof tasks)[number]) =>
     (task.project_id && projects.find((p) => p.id === task.project_id)?.title) ||
@@ -75,6 +80,30 @@ export default async function AreaPage({ params }: Props) {
                     <GoalRow key={g.goal_id} goal={g} today={today} />
                   ))}
                 </ul>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader className="flex-row items-center justify-between">
+              <CardTitle>{t("nav.metrics")}</CardTitle>
+              <Link
+                href={`/metrics/new?area=${area}`}
+                className="text-muted-foreground hover:text-foreground"
+                aria-label={t("metrics.new")}
+              >
+                <Plus className="size-4" />
+              </Link>
+            </CardHeader>
+            <CardContent>
+              {metrics.length === 0 ? (
+                <p className="text-muted-foreground text-sm">{t("metrics.emptyArea")}</p>
+              ) : (
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {metrics.map((m) => (
+                    <MetricCard key={m.id} metric={m} points={series.get(m.id) ?? []} />
+                  ))}
+                </div>
               )}
             </CardContent>
           </Card>

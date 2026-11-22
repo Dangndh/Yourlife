@@ -4,6 +4,8 @@ import { z } from "zod";
 
 import { PageHeader } from "@/components/page-header";
 import { GoalForm } from "@/components/planning/goal-form";
+import { metricOptions } from "@/core/metrics/format";
+import { getMetrics } from "@/core/metrics/queries";
 import { getAreas, getGoal, getGoalOptions } from "@/core/planning/queries";
 
 export async function generateMetadata() {
@@ -15,7 +17,7 @@ export default async function EditGoalPage({ params }: { params: Promise<{ id: s
   const { id } = await params;
   if (!z.uuid().safeParse(id).success) notFound();
   const t = await getTranslations();
-  const [data, areas, goals] = await Promise.all([getGoal(id), getAreas(), getGoalOptions()]);
+  const [data, areas, goals, metrics] = await Promise.all([getGoal(id), getAreas(), getGoalOptions(), getMetrics({ includeArchived: true })]);
   if (!data) notFound();
 
   return (
@@ -25,6 +27,10 @@ export default async function EditGoalPage({ params }: { params: Promise<{ id: s
         goal={data.goal}
         areas={areas}
         parentOptions={goals.filter((g) => g.id !== id)}
+        metricOptions={metricOptions(
+          t,
+          metrics.filter((m) => !m.is_archived || m.id === data.goal.metric_id),
+        )}
         cancelHref={`/goals/${id}`}
       />
     </>

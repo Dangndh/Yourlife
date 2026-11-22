@@ -4,6 +4,7 @@ import {
   CalendarDays,
   CheckSquare,
   LayoutDashboard,
+  LineChart,
   NotebookPen,
   Settings,
   Target,
@@ -18,6 +19,7 @@ export const coreNav: NavItem[] = [
   { href: "/goals", labelKey: "goals", icon: Target },
   { href: "/tasks", labelKey: "tasks", icon: CheckSquare },
   { href: "/log", labelKey: "log", icon: Activity },
+  { href: "/metrics", labelKey: "metrics", icon: LineChart },
 ];
 
 export const reflectNav: NavItem[] = [

@@ -15,6 +15,8 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { deleteGoal, setGoalStatus } from "@/core/planning/actions";
+import { formatMetricValue, metricName } from "@/core/metrics/format";
+import { getMetric } from "@/core/metrics/queries";
 import { formatDay } from "@/core/planning/dates";
 import { getAreas, getChildGoalIds, getGoal, getGoalProgressList, getProjects, getTasks, getToday } from "@/core/planning/queries";
 import type { GoalStatus } from "@/core/types";
@@ -45,14 +47,16 @@ export default async function GoalPage({ params }: Props) {
   if (!data) notFound();
   const { goal, progress } = data;
 
-  const [areas, projects, directTasks, allGoals, childIds, today] = await Promise.all([
+  const [areas, projects, directTasks, allGoals, childIds, today, metric] = await Promise.all([
     getAreas(),
     getProjects({ goalId: id }),
     getTasks({ goalId: id }),
     getGoalProgressList(),
     getChildGoalIds(id),
     getToday(),
+    goal.metric_id ? getMetric(goal.metric_id) : Promise.resolve(null),
   ]);
+  const fmt = (v: number | null | undefined) => (v == null || !metric ? "–" : formatMetricValue(metric, Number(v), locale));
   const area = areas.find((a) => a.id === goal.life_area_id);
   const parent = allGoals.find((g) => g.goal_id === goal.parent_goal_id);
   const subGoals = allGoals.filter((g) => childIds.includes(g.goal_id));
@@ -114,9 +118,26 @@ export default async function GoalPage({ params }: Props) {
             </CardHeader>
             <CardContent className="flex flex-col gap-3">
               <Progress value={progress?.progress ?? null} marker={progress?.time_elapsed} label={t("planning.progressTitle")} />
+              {metric && (
+                <Link
+                  href={`/metrics/${metric.id}`}
+                  className="hover:bg-accent/60 -mx-2 flex flex-wrap items-baseline gap-x-3 gap-y-1 rounded-md px-2 py-1.5 text-sm"
+                >
+                  <span className="font-medium">{metricName(t, metric)}</span>
+                  <span className="text-muted-foreground tabular-nums">
+                    {t("planning.metricProgress", {
+                      current: fmt(progress?.current_value),
+                      target: fmt(goal.target_value),
+                      baseline: fmt(goal.baseline_value),
+                    })}
+                  </span>
+                </Link>
+              )}
               <div className="text-muted-foreground flex flex-wrap gap-x-4 gap-y-1 text-xs">
                 <span>
-                  {progress && progress.tasks_total > 0
+                  {metric
+                    ? t("planning.progressFromMetric")
+                    : progress && progress.tasks_total > 0
                     ? t("planning.tasksDone", { done: progress.tasks_done, total: progress.tasks_total })
                     : t("planning.progressHint")}
                 </span>

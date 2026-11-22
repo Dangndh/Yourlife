@@ -58,6 +58,9 @@ export type Goal = {
   start_date: string | null;
   target_date: string | null;
   achieved_at: string | null;
+  metric_id: string | null;
+  baseline_value: number | null;
+  target_value: number | null;
 };
 
 /** Row of public.projects (columns used by the app). */

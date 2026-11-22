@@ -23,7 +23,18 @@ export const useQuickLog = () => useContext(QuickLogContext);
 const DURATIONS = [15, 30, 60, 90];
 
 /** Wraps the signed-in app: one Quick Log sheet, opened by any button or the L key. */
-export function QuickLogProvider({ areas, children }: { areas: AreaOption[]; children: React.ReactNode }) {
+type MetricOption = { id: string; label: string };
+
+export function QuickLogProvider({
+  areas,
+  metrics = [],
+  children,
+}: {
+  areas: AreaOption[];
+  /** Manual metrics a value can be recorded for along with the log. */
+  metrics?: MetricOption[];
+  children: React.ReactNode;
+}) {
   const [isOpen, setOpen] = useState(false);
   const [session, setSession] = useState(0);
   const open = useCallback(() => {
@@ -49,18 +60,19 @@ export function QuickLogProvider({ areas, children }: { areas: AreaOption[]; chi
     <QuickLogContext.Provider value={value}>
       {children}
       <Dialog open={isOpen} onOpenChange={setOpen}>
-        {isOpen && <QuickLogSheet key={session} areas={areas} onDone={() => setOpen(false)} />}
+        {isOpen && <QuickLogSheet key={session} areas={areas} metrics={metrics} onDone={() => setOpen(false)} />}
       </Dialog>
     </QuickLogContext.Provider>
   );
 }
 
-function QuickLogSheet({ areas, onDone }: { areas: AreaOption[]; onDone: () => void }) {
+function QuickLogSheet({ areas, metrics, onDone }: { areas: AreaOption[]; metrics: MetricOption[]; onDone: () => void }) {
   const t = useTranslations();
   const pathname = usePathname();
   const [state, action, pending] = useActionState<LogFormState, FormData>(quickLog, {});
   const [duration, setDuration] = useState(state.values?.duration_min ?? "");
   const [showMore, setShowMore] = useState(false);
+  const [metricId, setMetricId] = useState(state.values?.metric_id ?? "");
   const e = state.fieldErrors ?? {};
 
   // Default area = the area page you are on, else the first one.
@@ -129,7 +141,7 @@ function QuickLogSheet({ areas, onDone }: { areas: AreaOption[]; onDone: () => v
             />
           </div>
         </Field>
-        {showMore || state.values?.occurred_local || state.values?.notes ? (
+        {showMore || state.values?.occurred_local || state.values?.notes || state.values?.metric_id ? (
           <>
             <Field id="ql-when" label={t("log.when")} hint={t("log.whenHint")} error={e.occurred_local}>
               <Input id="ql-when" name="occurred_local" type="datetime-local" defaultValue={state.values?.occurred_local} />
@@ -137,6 +149,32 @@ function QuickLogSheet({ areas, onDone }: { areas: AreaOption[]; onDone: () => v
             <Field id="ql-notes" label={t("planning.fields.notes")} error={e.notes}>
               <Textarea id="ql-notes" name="notes" rows={3} defaultValue={state.values?.notes} />
             </Field>
+            {metrics.length > 0 && (
+              <div className="grid grid-cols-[2fr_1fr] gap-3">
+                <Field id="ql-metric" label={t("metrics.recordValue")} error={e.metric_id}>
+                  <NativeSelect id="ql-metric" name="metric_id" value={metricId} onChange={(ev) => setMetricId(ev.target.value)}>
+                    <option value="">{t("planning.fields.none")}</option>
+                    {metrics.map((m) => (
+                      <option key={m.id} value={m.id}>
+                        {m.label}
+                      </option>
+                    ))}
+                  </NativeSelect>
+                </Field>
+                <Field id="ql-metric-value" label={t("metrics.value")} error={e.metric_value}>
+                  <Input
+                    id="ql-metric-value"
+                    name="metric_value"
+                    type="number"
+                    step="any"
+                    inputMode="decimal"
+                    disabled={!metricId}
+                    required={!!metricId}
+                    defaultValue={state.values?.metric_value}
+                  />
+                </Field>
+              </div>
+            )}
           </>
         ) : (
           <button

@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
 
-import { zonedLocalToIso } from "@/core/planning/dates";
+import { dayOf, zonedLocalToIso } from "@/core/planning/dates";
 import { getTimeZone } from "@/core/planning/queries";
 import { createClient } from "@/lib/supabase/server";
 
@@ -58,13 +58,36 @@ async function parse(raw: Record<string, string>, prev: LogFormState) {
 }
 
 /** Quick Log: one line about what you did. Stays open-ended so it can be used from anywhere. */
+const metricPart = z.object({
+  metric_id: z.union([z.uuid(), z.literal("")]).optional(),
+  metric_value: z.union([z.literal(""), z.coerce.number().finite()]).optional(),
+});
+
 export async function quickLog(prev: LogFormState, formData: FormData): Promise<LogFormState> {
   const raw = fields(formData);
   const { row, fail } = await parse(raw, prev);
   if (!row) return fail!;
+  const metric = metricPart.safeParse(raw);
+  const metricId = metric.success && metric.data.metric_id ? metric.data.metric_id : null;
+  const metricValue = metric.success && typeof metric.data.metric_value === "number" ? metric.data.metric_value : null;
+  if (metricId && metricValue == null) {
+    return { fieldErrors: { metric_value: "invalid" }, values: raw, attempt: (prev.attempt ?? 0) + 1 };
+  }
+
   const supabase = await createClient();
-  const { error } = await supabase.from("activity_logs").insert(row);
-  if (error) return { error: "saveFailed", values: raw, attempt: (prev.attempt ?? 0) + 1 };
+  const { data: log, error } = await supabase.from("activity_logs").insert(row).select("id").single();
+  if (error || !log) return { error: "saveFailed", values: raw, attempt: (prev.attempt ?? 0) + 1 };
+
+  // Optional: the same Quick Log also records a value for a manual metric (weight, sleep…).
+  if (metricId && metricValue != null) {
+    // Stored at local noon of that day, so the chart puts it on the right date (see v_metric_series).
+    const tz = await getTimeZone();
+    const recorded_at = zonedLocalToIso(`${dayOf(row.occurred_at, tz)}T12:00`, tz);
+    const { error: entryError } = await supabase
+      .from("metric_entries")
+      .insert({ metric_id: metricId, value: metricValue, recorded_at, activity_log_id: log.id });
+    if (entryError) return { error: "saveFailed", values: raw, attempt: (prev.attempt ?? 0) + 1 };
+  }
   revalidatePath("/", "layout");
   return { ok: (prev.ok ?? 0) + 1 };
 }
